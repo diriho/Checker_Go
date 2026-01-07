@@ -2,17 +2,19 @@ package checker;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class App extends Application {
     @Override
     public void start(Stage stage) {
-        stage.setScene(new Scene(new Label("Hello JavaFX! 🎉"), 300, 200));
+        PaneOrganizer paneOrganizer = new PaneOrganizer();  
+        Scene scene = new Scene(paneOrganizer.getRoot(), 800, 600);
+        stage.setTitle("Checker Go!");  
+        stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
