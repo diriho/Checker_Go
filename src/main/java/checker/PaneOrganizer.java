@@ -4,14 +4,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 /**
  *
  * @author dondestiniriho
  */
 public class PaneOrganizer {
     private BorderPane root;
-    private Board gameBoard;
 
     public PaneOrganizer() {
         // Initialize and organize your panes here
@@ -29,11 +27,6 @@ public class PaneOrganizer {
         gamePane.setStyle("-fx-background-color: lightgray; -fx-border-color: gray;");
         gamePane.setFocusTraversable(true);
         this.root.setCenter(gamePane); 
-
-        // Initialize the game board
-        Color[] boardColors = {Color.BEIGE, Color.BROWN};
-        Pierce[][] myPierces = new Pierce[10][10];
-        this.gameBoard = new Board(gamePane, boardColors, myPierces);
 
     }
 

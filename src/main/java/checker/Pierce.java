@@ -3,7 +3,7 @@ package checker;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Pierce {
+public class Pierce implements PieceInterface {
     private Circle pierce;
     private Color color;
     private int x;

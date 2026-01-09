@@ -21,7 +21,7 @@ public class Square {
 
     // Setup square properties 
     private void setupSquare() {
-        this.square = new Rectangle(this.x , this.y, 30, 30);
+        this.square = new Rectangle(this.x , this.y, 50, 50);
         square.setFill(this.color);
         square.setStroke(Color.BLACK);
         square.setStrokeWidth(1);

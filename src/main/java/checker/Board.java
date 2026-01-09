@@ -3,7 +3,7 @@ package checker;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-public class Board {
+public class Board {.     
     // initialize instance variables
     private Pane myPane;
     private Pierce[][] myPierces;
@@ -19,14 +19,14 @@ public class Board {
     
      // setup the checkerboard on myPane
     private void setupBoard() {
-        int squareSize = 30;
+        int squareSize = 50;
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
                 if ((row + col) % 2 == 0) {
-                    Square square = new Square(this.boardColors[0], col * squareSize + 10, row * squareSize + 10);
+                    Square square = new Square(this.boardColors[0], col * squareSize + 20, row * squareSize + 20);
                     this.myPane.getChildren().add(square.getSquare());
                 } else {
-                    Square square = new Square(this.boardColors[1], col * squareSize + 10, row * squareSize + 10);
+                    Square square = new Square(this.boardColors[1], col * squareSize + 20, row * squareSize + 20);
                     this.myPane.getChildren().add(square.getSquare());
                 }
             }
@@ -36,7 +36,7 @@ public class Board {
 
     private void setupPierces() {
         // Method to setup initial pierce positions on the board
-        
+
     }
 
 
