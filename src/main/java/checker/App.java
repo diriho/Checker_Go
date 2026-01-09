@@ -8,7 +8,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         PaneOrganizer paneOrganizer = new PaneOrganizer();  
-        Scene scene = new Scene(paneOrganizer.getRoot(), 800, 600);
+        Scene scene = new Scene(paneOrganizer.getRoot(), 960, 960);
         stage.setTitle("Checker Go!");  
         stage.setScene(scene);
         stage.show();
