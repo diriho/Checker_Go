@@ -8,3 +8,5 @@ checker/PaneOrganizer.class
 checker/constants.class
 checker/PlayerInterface.class
 checker/App.class
+checker/PieceInterface.class
+checker/kingPiece.class

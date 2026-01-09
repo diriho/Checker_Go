@@ -11,19 +11,18 @@ public class Game {
     
 
     // Game constructor
-    public Game(Board gameBoard, Pane gamePane, Pane sidePane) {
-        this.gameBoard = gameBoard;
+    public Game(Pane gamePane, Pane sidePane) {
         this.gamePane = gamePane;
-        this.sidePane = sidePane; 
-        
+        this.sidePane = sidePane;
+        this.initializeGameBoard();
         
     }
 
-    public void intializeGameBoard() {
+    //initalize game board with all the pierces
+    private void initializeGameBoard() {
         // Initialize the game board
         Color[] boardColors = {Color.BEIGE, Color.BROWN};
-        Pierce[][] myPierces = new Pierce[10][10];
-        this.gameBoard = new Board(this.gamePane, boardColors, myPierces);
+        this.gameBoard = new Board(this.gamePane, boardColors);
 
     }
 

@@ -8,20 +8,18 @@ public class Pierce implements PieceInterface {
     private Color color;
     private int x;
     private int y;
-    private Board board;
 
     // Pierce class constructor
-    public Pierce(Color color, Board board, int x, int y) {
-       this.board = board;   
+    public Pierce(Color color, int x, int y) {  
         this.color = color;
         this.x = x;
         this.y = y;
-        this.setupPierce(this.color, board, this.x, this.y);
+        this.setupPierce(this.color, this.x, this.y);
 
     }   
 
     // setup and initialize pierce properties
-    private void setupPierce(Color color, Board board, int x, int y ) {
+    private void setupPierce(Color color, int x, int y ) {
         this.pierce = new Circle(20, color);
         pierce.setCenterX(x);
         pierce.setCenterY(y);
