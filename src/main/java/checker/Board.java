@@ -56,13 +56,13 @@ public class Board {
                     if (row < 4) {
                         Pierce blackPierce = new Pierce(Color.BLACK, xPos, yPos);
                         this.myPierces[row][col] = blackPierce;
-                        this.myPane.getChildren().add(blackPierce.getCircle());
+                        this.myPane.getChildren().add(blackPierce.getNode());
                     }
                     // Rows 6-9 are White pieces
                     else if (row > 5) {
                         Pierce whitePierce = new Pierce(Color.WHITE, xPos, yPos);
                         this.myPierces[row][col] = whitePierce;
-                        this.myPane.getChildren().add(whitePierce.getCircle());
+                        this.myPane.getChildren().add(whitePierce.getNode());
                     }
                 }
             }

@@ -9,8 +9,7 @@ import java.util.Random;
 
 public class ComputerPlayer extends HumanPlayer {
 
-    private Difficulty difficulty;
-    private Random random;
+    private MoveStrategy strategy;
 
     // Constructor for ComputerPlayer class
     public ComputerPlayer(Board board, Color color) {
@@ -19,8 +18,22 @@ public class ComputerPlayer extends HumanPlayer {
 
     public ComputerPlayer(Board board, Color color, Difficulty difficulty) {
         super(board, color);
-        this.difficulty = difficulty;
-        this.random = new Random();
+        setDifficulty(difficulty);
+    }
+    
+    public void setDifficulty(Difficulty diff) {
+        switch (diff) {
+            case HARD:
+                this.strategy = new HardAI();
+                break;
+            case MEDIUM:
+                this.strategy = new MediumAI();
+                break;
+            case EASY:
+            default:
+                this.strategy = new EasyAI();
+                break;
+        }
     }
 
     @Override
@@ -40,75 +53,17 @@ public class ComputerPlayer extends HumanPlayer {
     }
 
     private void makeMove() {
-        List<Move> validMoves = getAllValidMoves();
+        Move selectedMove = this.strategy.chooseMove(this.board, this.myColor);
         
-        if (validMoves.isEmpty()) {
-            // handle inability to move (pass turn)
+        if (selectedMove == null) {
+            // No moves available
              if (this.onTurnEnd != null) {
                 this.onTurnEnd.run();
             }
             return;
         }
-
-        Move selectedMove = null;
-
-        switch (this.difficulty) {
-            case EASY:
-                selectedMove = getEasyMove(validMoves);
-                break;
-            case MEDIUM:
-                selectedMove = getMediumMove(validMoves);
-                break;
-            case HARD:
-                selectedMove = getHardMove(validMoves);
-                break;
-        }
         
-        if (selectedMove != null) {
-            executeMove(selectedMove);
-        }
-    }
-
-    private Move getEasyMove(List<Move> moves) {
-        // Random move
-        return moves.get(this.random.nextInt(moves.size()));
-    }
-
-    private Move getMediumMove(List<Move> moves) {
-        // Prefer moves that go to the edge (safer)
-        List<Move> edgeMoves = new ArrayList<>();
-        for (Move m : moves) {
-            if (m.toCol == 0 || m.toCol == 9) {
-                edgeMoves.add(m);
-            }
-        }
-        
-        if (!edgeMoves.isEmpty()) {
-            return edgeMoves.get(this.random.nextInt(edgeMoves.size()));
-        }
-        
-        return getEasyMove(moves);
-    }
-
-    private Move getHardMove(List<Move> moves) {
-        // Prioritize captures first (if any capture moves exist, List<Move> passes captures first
-        // based on how we built it in getAllValidMoves, BUT captures are prioritized only if we return ONLY captures
-        // Currently getAllValidMoves returns EITHER captures OR simple moves.
-        // So we just need to pick the "best" move from the list.
-        
-        // Hard Strategy: Center Control
-        List<Move> centerMoves = new ArrayList<>();
-         for (Move m : moves) {
-            if (m.toCol >= 3 && m.toCol <= 6) {
-                centerMoves.add(m);
-            }
-        }
-        
-        if (!centerMoves.isEmpty()) {
-            return centerMoves.get(this.random.nextInt(centerMoves.size()));
-        }
-
-        return getEasyMove(moves);
+        executeMove(selectedMove);
     }
 
     private void executeMove(Move move) {
@@ -128,108 +83,50 @@ public class ComputerPlayer extends HumanPlayer {
     }
 
     private void continueMultiJump(Pierce p) {
+        // Use VirtualBoard to find only capture moves for this specific piece
+        VirtualBoard vb = new VirtualBoard(this.board);
         int r = -1, c = -1;
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (this.board.getMyPierces()[i][j] == p) {
-                    r = i;
-                    c = j;
-                    break;
-                }
+        // Find p coords
+        for(int i=0; i<10; i++){
+            for(int j=0; j<10; j++){
+                if(this.board.getMyPierces()[i][j] == p) { r=i; c=j; break; }
             }
         }
         
-        if (r == -1) { 
-            finalizeTurn(); 
-            return; 
+        if (r == -1) { finalizeTurn(); return; }
+        
+        byte pType = vb.grid[r][c];
+        List<VirtualBoard.VMove> moves = new ArrayList<>();
+        List<VirtualBoard.VMove> captures = new ArrayList<>();
+        
+        // We need to access the private helper 'addMovesForPiece' in VB or reimplement.
+        // Since VB methods are private, we can just use getLegalMoves and filter.
+        List<VirtualBoard.VMove> allMoves = vb.getLegalMoves(pType);
+        
+        for (VirtualBoard.VMove vm : allMoves) {
+            if (vm.fromR == r && vm.fromC == c && vm.isCapture) {
+                captures.add(vm);
+            }
         }
-
-        List<Move> captures = new ArrayList<>();
-        addMovesForPiece(p, r, c, captures, new ArrayList<>());
         
         if (!captures.isEmpty()) {
-             Move nextMove = captures.get(this.random.nextInt(captures.size()));
+             // Just pick one (Handling branching in multi-jump is rare/complex)
+             VirtualBoard.VMove vNext = captures.get(0);
+             Move nextMove = convertToRealMove(vNext);
              executeMove(nextMove);
         } else {
              finalizeTurn();
         }
     }
-
-    private List<Move> getAllValidMoves() {
-        Pierce[][] grid = this.board.getMyPierces();
-        
-        // 1. Gather all captures first (forced captures usually required, but allowed here)
-        List<Move> captures = new ArrayList<>();
-        // 2. Gather simple moves
-        List<Move> simpleMoves = new ArrayList<>();
-        
-        for (int r = 0; r < 10; r++) {
-            for (int c = 0; c < 10; c++) {
-                Pierce p = grid[r][c];
-                if (p != null && this.myPierces.contains(p)) {
-                    addMovesForPiece(p, r, c, captures, simpleMoves);
-                }
-            }
+    
+    private Move convertToRealMove(VirtualBoard.VMove vm) {
+        Pierce p = this.board.getMyPierces()[vm.fromR][vm.fromC];
+        int jumpR = -1, jumpC = -1;
+        if (vm.isCapture && !vm.capturedPos.isEmpty()) {
+            jumpR = vm.capturedPos.get(0)[0];
+            jumpC = vm.capturedPos.get(0)[1];
         }
-        
-        // Prioritize captures if available? (Common checkers rule, but logic is flexible)
-        // Merging them for now, but putting captures first so Hard AI might pick them
-        if (!captures.isEmpty()) {
-            return captures; 
-        }
-        return simpleMoves;
-    }
-
-    private void addMovesForPiece(Pierce p, int r, int c, List<Move> captures, List<Move> simpleMoves) {
-        int direction = (this.myColor.equals(Color.WHITE)) ? -1 : 1;
-        boolean isKing = (p instanceof kingPiece);
-        
-        // Simple Moves
-        List<Integer> simpleRows = new ArrayList<>();
-        simpleRows.add(r + direction);
-        if (isKing) {
-            simpleRows.add(r - direction);
-        }
-
-        for (int nextRow : simpleRows) {
-            if (nextRow >= 0 && nextRow < 10) {
-                // Left
-                if (c - 1 >= 0 && this.board.getMyPierces()[nextRow][c - 1] == null) {
-                    simpleMoves.add(new Move(p, r, c, nextRow, c - 1, false, -1, -1));
-                }
-                // Right
-                if (c + 1 < 10 && this.board.getMyPierces()[nextRow][c + 1] == null) {
-                    simpleMoves.add(new Move(p, r, c, nextRow, c + 1, false, -1, -1));
-                }
-            }
-        }
-        
-        // Capture Moves
-        List<Integer> captureRows = new ArrayList<>();
-        captureRows.add(direction * 2);
-        if (isKing) {
-            captureRows.add(direction * -2);
-        }
-        
-        int[] resultDc = {-2, 2};
-        
-        for (int dr : captureRows) {
-             for (int dc : resultDc) {
-                 int nr = r + dr;
-                 int nc = c + dc;
-                 
-                 if (nr >= 0 && nr < 10 && nc >= 0 && nc < 10) {
-                     if (this.board.getMyPierces()[nr][nc] == null) {
-                         int mr = (r + nr) / 2;
-                         int mc = (c + nc) / 2;
-                         Pierce mid = this.board.getMyPierces()[mr][mc];
-                         
-                         if (mid != null && !this.myPierces.contains(mid)) {
-                             captures.add(new Move(p, r, c, nr, nc, true, mr, mc));
-                         }
-                     }
-                 }
-             }
-        }
+        return new Move(p, vm.fromR, vm.fromC, vm.toR, vm.toC, vm.isCapture, jumpR, jumpC);
     }
 }
+

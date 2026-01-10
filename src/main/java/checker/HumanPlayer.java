@@ -117,7 +117,7 @@ public class HumanPlayer implements PlayerInterface {
         } 
         // 2. Capture Move (2 steps)
         else if (colDiff == 2 && Math.abs(rowDiff) == 2) {
-             boolean isKing = (this.selectedPiece instanceof kingPiece);
+             boolean isKing = this.selectedPiece.isKing();
              boolean validDirection = false;
              int rDiff = targetRow - oldRow;
              
@@ -156,7 +156,7 @@ public class HumanPlayer implements PlayerInterface {
         Pierce capturedPiece = this.board.getMyPierces()[jumpedRow][jumpedCol];
         this.board.getMyPierces()[jumpedRow][jumpedCol] = null;
         if (capturedPiece != null) {
-            this.board.getPane().getChildren().remove(capturedPiece.getCircle());
+            this.board.getPane().getChildren().remove(capturedPiece.getNode());
         }
         
         this.updateBoardAndPiece(oldRow, oldCol, targetRow, targetCol);
@@ -177,6 +177,20 @@ public class HumanPlayer implements PlayerInterface {
         int newPixelX = targetCol * 50 + 45;
         int newPixelY = targetRow * 50 + 45;
         this.movePiece(this.selectedPiece, newPixelX, newPixelY);
+        
+        // Check for promotion
+        if (!this.selectedPiece.isKing()) {
+            boolean promoted = false;
+            if (this.myColor.equals(Color.WHITE) && targetRow == 0) {
+                promoted = true;
+            } else if (this.myColor.equals(Color.BLACK) && targetRow == 9) {
+                promoted = true;
+            }
+            
+            if (promoted) {
+                this.selectedPiece.makeKing();
+            }
+        }
     }
     
     protected void finalizeTurn() {
@@ -189,7 +203,7 @@ public class HumanPlayer implements PlayerInterface {
     
     private boolean canCaptureAgain(int r, int c) {
         Pierce p = this.board.getMyPierces()[r][c];
-        boolean isKing = (p instanceof kingPiece);
+        boolean isKing = p.isKing();
         int direction = (this.myColor.equals(Color.WHITE)) ? -1 : 1;
 
         // Check all 4 diagonal directions for a valid capture
