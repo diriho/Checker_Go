@@ -117,15 +117,31 @@ public class HumanPlayer implements PlayerInterface {
         } 
         // 2. Capture Move (2 steps)
         else if (colDiff == 2 && Math.abs(rowDiff) == 2) {
-             // Calculate jumped square
-             int jumpedRow = (oldRow + targetRow) / 2;
-             int jumpedCol = (oldCol + targetCol) / 2;
+             boolean isKing = (this.selectedPiece instanceof kingPiece);
+             boolean validDirection = false;
+             int rDiff = targetRow - oldRow;
              
-             Pierce jumpedPiece = this.board.getMyPierces()[jumpedRow][jumpedCol];
-             
-             // Check if there is an opponent piece to capture
-             if (jumpedPiece != null && !this.myPierces.contains(jumpedPiece)) {
-                 executeCaptureMove(oldRow, oldCol, targetRow, targetCol, jumpedRow, jumpedCol);
+             if (isKing) {
+                 validDirection = true;
+             } else {
+                 if (this.myColor.equals(Color.BLACK)) {
+                     validDirection = (rDiff == 2);
+                 } else { // White
+                     validDirection = (rDiff == -2);
+                 }
+             }
+
+             if (validDirection) {
+                 // Calculate jumped square
+                 int jumpedRow = (oldRow + targetRow) / 2;
+                 int jumpedCol = (oldCol + targetCol) / 2;
+                 
+                 Pierce jumpedPiece = this.board.getMyPierces()[jumpedRow][jumpedCol];
+                 
+                 // Check if there is an opponent piece to capture
+                 if (jumpedPiece != null && !this.myPierces.contains(jumpedPiece)) {
+                     executeCaptureMove(oldRow, oldCol, targetRow, targetCol, jumpedRow, jumpedCol);
+                 }
              }
         }
     }
@@ -172,11 +188,24 @@ public class HumanPlayer implements PlayerInterface {
     }
     
     private boolean canCaptureAgain(int r, int c) {
+        Pierce p = this.board.getMyPierces()[r][c];
+        boolean isKing = (p instanceof kingPiece);
+        int direction = (this.myColor.equals(Color.WHITE)) ? -1 : 1;
+
         // Check all 4 diagonal directions for a valid capture
         int[] dr = {-2, -2, 2, 2};
         int[] dc = {-2, 2, -2, 2};
         
         for (int i = 0; i < 4; i++) {
+            // Filter invalid directions for regular pieces
+            int rowStep = dr[i];
+            boolean directionOk = isKing; 
+            if (!isKing) {
+                 if (direction == -1 && rowStep == -2) directionOk = true;
+                 if (direction == 1 && rowStep == 2) directionOk = true;
+            }
+            if (!directionOk) continue;
+
             int nr = r + dr[i];
             int nc = c + dc[i];
             

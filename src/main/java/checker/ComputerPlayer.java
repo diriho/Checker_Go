@@ -116,8 +116,42 @@ public class ComputerPlayer extends HumanPlayer {
         
         if (move.isCapture) {
              executeCaptureMove(move.fromRow, move.fromCol, move.toRow, move.toCol, move.jumpRow, move.jumpCol);
+             
+             if (this.selectedPiece != null) {
+                 PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+                 pause.setOnFinished(e -> continueMultiJump(this.selectedPiece));
+                 pause.play();
+             }
         } else {
              executeSimpleMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
+        }
+    }
+
+    private void continueMultiJump(Pierce p) {
+        int r = -1, c = -1;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (this.board.getMyPierces()[i][j] == p) {
+                    r = i;
+                    c = j;
+                    break;
+                }
+            }
+        }
+        
+        if (r == -1) { 
+            finalizeTurn(); 
+            return; 
+        }
+
+        List<Move> captures = new ArrayList<>();
+        addMovesForPiece(p, r, c, captures, new ArrayList<>());
+        
+        if (!captures.isEmpty()) {
+             Move nextMove = captures.get(this.random.nextInt(captures.size()));
+             executeMove(nextMove);
+        } else {
+             finalizeTurn();
         }
     }
 
@@ -148,36 +182,51 @@ public class ComputerPlayer extends HumanPlayer {
 
     private void addMovesForPiece(Pierce p, int r, int c, List<Move> captures, List<Move> simpleMoves) {
         int direction = (this.myColor.equals(Color.WHITE)) ? -1 : 1;
+        boolean isKing = (p instanceof kingPiece);
         
-        // Simple Moves (Forward only)
-        int nextRow = r + direction;
-        if (nextRow >= 0 && nextRow < 10) {
-            // Left
-            if (c - 1 >= 0 && this.board.getMyPierces()[nextRow][c - 1] == null) {
-                simpleMoves.add(new Move(p, r, c, nextRow, c - 1, false, -1, -1));
-            }
-            // Right
-            if (c + 1 < 10 && this.board.getMyPierces()[nextRow][c + 1] == null) {
-                simpleMoves.add(new Move(p, r, c, nextRow, c + 1, false, -1, -1));
+        // Simple Moves
+        List<Integer> simpleRows = new ArrayList<>();
+        simpleRows.add(r + direction);
+        if (isKing) {
+            simpleRows.add(r - direction);
+        }
+
+        for (int nextRow : simpleRows) {
+            if (nextRow >= 0 && nextRow < 10) {
+                // Left
+                if (c - 1 >= 0 && this.board.getMyPierces()[nextRow][c - 1] == null) {
+                    simpleMoves.add(new Move(p, r, c, nextRow, c - 1, false, -1, -1));
+                }
+                // Right
+                if (c + 1 < 10 && this.board.getMyPierces()[nextRow][c + 1] == null) {
+                    simpleMoves.add(new Move(p, r, c, nextRow, c + 1, false, -1, -1));
+                }
             }
         }
         
-        // Capture Moves (All 4 diagonals)
-        int[] dr = {-2, -2, 2, 2};
-        int[] dc = {-2, 2, -2, 2};
+        // Capture Moves
+        List<Integer> captureRows = new ArrayList<>();
+        captureRows.add(direction * 2);
+        if (isKing) {
+            captureRows.add(direction * -2);
+        }
         
-        for (int i = 0; i < 4; i++) {
-             int nr = r + dr[i];
-             int nc = c + dc[i];
-             
-             if (nr >= 0 && nr < 10 && nc >= 0 && nc < 10) {
-                 if (this.board.getMyPierces()[nr][nc] == null) {
-                     int mr = (r + nr) / 2;
-                     int mc = (c + nc) / 2;
-                     Pierce mid = this.board.getMyPierces()[mr][mc];
-                     
-                     if (mid != null && !this.myPierces.contains(mid)) {
-                         captures.add(new Move(p, r, c, nr, nc, true, mr, mc));
+        int[] resultDc = {-2, 2};
+        
+        for (int dr : captureRows) {
+             for (int dc : resultDc) {
+                 int nr = r + dr;
+                 int nc = c + dc;
+                 
+                 if (nr >= 0 && nr < 10 && nc >= 0 && nc < 10) {
+                     if (this.board.getMyPierces()[nr][nc] == null) {
+                         int mr = (r + nr) / 2;
+                         int mc = (c + nc) / 2;
+                         Pierce mid = this.board.getMyPierces()[mr][mc];
+                         
+                         if (mid != null && !this.myPierces.contains(mid)) {
+                             captures.add(new Move(p, r, c, nr, nc, true, mr, mc));
+                         }
                      }
                  }
              }

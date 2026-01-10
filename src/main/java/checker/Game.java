@@ -18,22 +18,22 @@ public class Game {
         this.gamePane = gamePane;
         this.sidePane = sidePane;
         new sideBar(this.sidePane, this);
-        this.resetGame(false); // Default to Human vs Human
+        this.resetGame(false, Difficulty.EASY); // Default to Human vs Human
     }
 
-    public void resetGame(boolean vsComputer) {
+    public void resetGame(boolean vsComputer, Difficulty difficulty) {
         this.gamePane.getChildren().clear();
         this.initializeGameBoard();
-        this.initializePlayers(vsComputer);
+        this.initializePlayers(vsComputer, difficulty);
     }
 
-    private void initializePlayers(boolean vsComputer) {
+    private void initializePlayers(boolean vsComputer, Difficulty difficulty) {
         // Player 1: Black (Moves Down)
         this.player1 = new HumanPlayer(this.gameBoard, Color.BLACK);
         
         // Player 2: White (Moves Up)
         if (vsComputer) {
-             this.player2 = new ComputerPlayer(this.gameBoard, Color.WHITE);
+             this.player2 = new ComputerPlayer(this.gameBoard, Color.WHITE, difficulty);
         } else {
              this.player2 = new HumanPlayer(this.gameBoard, Color.WHITE);
         }

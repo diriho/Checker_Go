@@ -2,6 +2,7 @@ package checker;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -14,6 +15,7 @@ public class sideBar {
     private VBox pane;
     private Game game;
     private ToggleGroup group;
+    private ComboBox<Difficulty> difficultyBox;
 
     public sideBar(Pane pane, Game game) {
         this.pane = (VBox) pane;
@@ -36,18 +38,80 @@ public class sideBar {
 
         RadioButton hvc = new RadioButton("Human vs Computer");
         hvc.setToggleGroup(this.group);
-
-        Button startButton = new Button("Restart Game");
+        
+        // Difficulty controls
+        Label diffLabel = new Label("Difficulty");
+        diffLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        
+        this.difficultyBox = new ComboBox<>();
+        this.difficultyBox.getItems().addAll(Difficulty.values());
+        this.difficultyBox.setValue(Difficulty.EASY);
+        this.difficultyBox.setDisable(true); // Disabled for HvH default
+        
+        Button confirmButton = new Button("Confirm Settings");
+        confirmButton.setStyle("-fx-background-color: #2E8B57; -fx-text-fill: white;");
+        
+        Button startButton = new Button("Start New Game");
         startButton.setStyle("-fx-background-color: #8B4513; -fx-text-fill: white;");
-        startButton.setOnAction(e -> this.handleStartGame());
+        startButton.setDisable(true); // Initially disabled
+        
+        confirmButton.setOnAction(e -> {
+             startButton.setDisable(false);
+             confirmButton.setDisable(true);
+             // Lock controls? Optional, but good feedback
+             hvh.setDisable(true);
+             hvc.setDisable(true);
+             this.difficultyBox.setDisable(true);
+        });
 
-        this.pane.getChildren().addAll(new Label(" "), title, hvh, hvc, new Label(" "), startButton);
+        startButton.setOnAction(e -> {
+            this.handleStartGame();
+            // Re-enable controls for next time
+            confirmButton.setDisable(false);
+            hvh.setDisable(false);
+            hvc.setDisable(false);
+            // Reset difficulty box enable state based on selection
+            if (hvc.isSelected()) {
+                this.difficultyBox.setDisable(false);
+            }
+            startButton.setDisable(true);
+        });
+        
+        // Reset confirm if settings change
+        this.group.selectedToggleProperty().addListener((obs, o, n) -> {
+             startButton.setDisable(true);
+             confirmButton.setDisable(false);
+             if (n == hvc) {
+                this.difficultyBox.setDisable(false);
+            } else {
+                this.difficultyBox.setDisable(true);
+            }
+        });
+        
+        this.difficultyBox.valueProperty().addListener((obs, o, n) -> {
+             startButton.setDisable(true);
+             confirmButton.setDisable(false);
+        });
+
+        this.pane.getChildren().addAll(
+            new Label(" "), 
+            title, 
+            hvh, 
+            hvc, 
+            new Label(" "), 
+            diffLabel, 
+            this.difficultyBox,
+            new Label(" "), 
+            confirmButton,
+            startButton
+        );
     }
     
     private void handleStartGame() {
         RadioButton selected = (RadioButton) this.group.getSelectedToggle();
         boolean vsComputer = selected.getText().equals("Human vs Computer");
-        this.game.resetGame(vsComputer);
+        Difficulty selectedDiff = this.difficultyBox.getValue();
+        this.game.resetGame(vsComputer, selectedDiff);
     }
 }
 
