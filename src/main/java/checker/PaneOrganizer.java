@@ -4,17 +4,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+
 /**
- *
  * @author dondestiniriho
  */
+
+
 public class PaneOrganizer {
     private BorderPane root;
     private VBox sidePane;
     private Pane gamePane;  
     private HBox bottomPane;
     
-
+    // Constructor of the PaneOrganizer
     public PaneOrganizer() {
         // Initialize and organize your panes here
          this.root = new BorderPane();

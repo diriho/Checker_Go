@@ -11,7 +11,6 @@ public class Board {
 
     // Board class constructor
     public Board(Pane myPane, Color[] boardColors) {
-
         this.myPane = myPane;
         this.boardColors = boardColors;
         this.myPierces = new Pierce[10][10];
@@ -37,7 +36,7 @@ public class Board {
 
     }
 
-    
+    // setup the pierces on the board
     private void setupPierces() {
         int squareSize = 50;
         int boardOffset = 20;
@@ -70,11 +69,14 @@ public class Board {
         }
     }
 
+    // a getter method that returns the 2D array of pierces on the board
     public Pierce[][] getMyPierces() {
         return this.myPierces;
     }
 
-
+    public Pane getPane() {
+        return this.myPane;
+    }
 
 
 

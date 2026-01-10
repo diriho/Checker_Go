@@ -33,14 +33,17 @@ public class Square {
         return new int[] {this.x, this.y};
     }
 
+    // get color of the square
     public Color getColor() {
         return this.color;
     }
 
+    // set the color of the square
     public void setColor(Color color) {
         this.color = color;
     }
 
+    // get the square Node which will be displayed to the pane a children
     public Rectangle getSquare() {
         return this.square;
     }

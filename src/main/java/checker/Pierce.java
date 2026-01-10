@@ -58,6 +58,8 @@ public class Pierce implements PieceInterface {
     public void setCoords(int x, int y) {
         this.x = x;
         this.y = y;
+        this.pierce.setCenterX(x);
+        this.pierce.setCenterY(y);
     }
 
 }
