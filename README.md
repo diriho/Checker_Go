@@ -71,9 +71,10 @@ java -version
 javac -version
 ```
 
-Once you have your JDK and Maven ready running, run in your terminal:
+Once you have your JDK and Maven ready running, run this in your terminal to compile and run the program:
 ```
 mvn compile
 mvn javafx:run
 ```
-Shortcut: ``mvn clean compile javafx:run`` 
+Shortcut: 
+``` mvn clean compile javafx:run ``` 
