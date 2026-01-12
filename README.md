@@ -29,31 +29,37 @@ The computer opponent (`ComputerPlayer`) has been refactored to use a Strategy P
 
 ## How to?
 Git repository: https://github.com/diriho/Checker_Go.git
-Then close the repo
-``git clone repository link``
+Then clone the repo to directory of your choice from the terminal and run:
+    ``git clone repository link``
 
 This program uses Maven as an automation and dependency management tool. 
 If you don't have Maven in installed on your computer, run the followig commands in your terminal
 For Mac run:
-``brew install maven``
+```
+brew install maven``
 To verify maven installatin, run: ``mvn -version``
 Install or upgrade you java JDK: ``brew install openjdk``
 After installation, link it ``sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk``
 And to verify if it was successfully installation run:
 ``java -version``
 ``javac -version``
+```
 
 For Windows run :
+```
 ``choco install maven -y``
 To verify maven installatin, run:: ``mvn -version``
 Install or upgrade you java JDK: ``choco install openjdk -y``
 And to verify if it was successfully installation run:
 ``java -version``
 ``javac -version``
+```
 
-Once you have your JDK and Maven ready running 
+Once you have your JDK and Maven ready running, run in your terminal:
+```
+
 To compile the program run ``mvn compile``
 Then run ``mvn javafx:run``
 
 Shortcut: ``mvn clean compile javafx:run`` 
-
+```
