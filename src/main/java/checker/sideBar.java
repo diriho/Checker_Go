@@ -124,6 +124,8 @@ public class sideBar {
         );
     }
     
+    // helper method that handles start new game option
+    
     private void handleStartGame() {
         RadioButton selected = (RadioButton) this.group.getSelectedToggle();
         boolean vsComputer = selected.getText().equals("Human vs Computer");
