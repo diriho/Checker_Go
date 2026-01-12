@@ -77,4 +77,6 @@ mvn compile
 mvn javafx:run
 ```
 Shortcut: 
-``` mvn clean compile javafx:run ``` 
+``` 
+mvn clean compile javafx:run 
+``` 
