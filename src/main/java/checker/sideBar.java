@@ -57,13 +57,20 @@ public class sideBar {
         this.themeBox.getItems().addAll(BoardTheme.values());
         this.themeBox.setValue(BoardTheme.CLASSIC);
 
+        // settings confirmation button 
         Button confirmButton = new Button("Confirm Settings");
         confirmButton.setStyle("-fx-background-color: #2E8B57; -fx-text-fill: white;");
         
+        // restart game button
         Button startButton = new Button("Start New Game");
         startButton.setStyle("-fx-background-color: #8B4513; -fx-text-fill: white;");
         startButton.setDisable(true); // Initially disabled
+
+        // add a quit   button 
+        Button quitButton = new Button("Quit");
+        quitButton.setStyle("-fx-background-color: #B22222; -fx-text-fill: white;");
         
+        // event handlers for all the buttons buttons
         confirmButton.setOnAction(e -> {
              this.handleStartGame(); // Apply settings immediately
              startButton.setDisable(false);
@@ -73,6 +80,10 @@ public class sideBar {
         startButton.setOnAction(e -> {
             this.handleStartGame(); // Restart with current selection
             // Do not enable confirm button here; settings haven't changed
+        });
+
+        quitButton.setOnAction(e -> {
+            System.exit(0);
         });
         
         // Reset confirm if settings change
