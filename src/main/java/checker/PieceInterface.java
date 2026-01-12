@@ -2,7 +2,6 @@ package checker;
 
 import javafx.scene.Node;
 import javafx.scene.paint.Color;    
-import javafx.scene.shape.Circle;   
 
 
 public interface PieceInterface {

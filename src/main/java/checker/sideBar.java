@@ -16,6 +16,7 @@ public class sideBar {
     private Game game;
     private ToggleGroup group;
     private ComboBox<Difficulty> difficultyBox;
+    private ComboBox<BoardTheme> themeBox;
 
     public sideBar(Pane pane, Game game) {
         this.pane = (VBox) pane;
@@ -48,6 +49,14 @@ public class sideBar {
         this.difficultyBox.setValue(Difficulty.EASY);
         this.difficultyBox.setDisable(true); // Disabled for HvH default
         
+        // Theme controls
+        Label themeLabel = new Label("Board Theme");
+        themeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        
+        this.themeBox = new ComboBox<>();
+        this.themeBox.getItems().addAll(BoardTheme.values());
+        this.themeBox.setValue(BoardTheme.CLASSIC);
+
         Button confirmButton = new Button("Confirm Settings");
         confirmButton.setStyle("-fx-background-color: #2E8B57; -fx-text-fill: white;");
         
@@ -56,25 +65,14 @@ public class sideBar {
         startButton.setDisable(true); // Initially disabled
         
         confirmButton.setOnAction(e -> {
+             this.handleStartGame(); // Apply settings immediately
              startButton.setDisable(false);
              confirmButton.setDisable(true);
-             // Lock controls? Optional, but good feedback
-             hvh.setDisable(true);
-             hvc.setDisable(true);
-             this.difficultyBox.setDisable(true);
         });
 
         startButton.setOnAction(e -> {
-            this.handleStartGame();
-            // Re-enable controls for next time
-            confirmButton.setDisable(false);
-            hvh.setDisable(false);
-            hvc.setDisable(false);
-            // Reset difficulty box enable state based on selection
-            if (hvc.isSelected()) {
-                this.difficultyBox.setDisable(false);
-            }
-            startButton.setDisable(true);
+            this.handleStartGame(); // Restart with current selection
+            // Do not enable confirm button here; settings haven't changed
         });
         
         // Reset confirm if settings change
@@ -92,6 +90,11 @@ public class sideBar {
              startButton.setDisable(true);
              confirmButton.setDisable(false);
         });
+        
+        this.themeBox.valueProperty().addListener((obs, o, n) -> {
+             startButton.setDisable(true);
+             confirmButton.setDisable(false);
+        });
 
         this.pane.getChildren().addAll(
             new Label(" "), 
@@ -101,7 +104,10 @@ public class sideBar {
             new Label(" "), 
             diffLabel, 
             this.difficultyBox,
-            new Label(" "), 
+            new Label(" "),
+            themeLabel,
+            this.themeBox,
+            new Label(" "),
             confirmButton,
             startButton
         );
@@ -111,7 +117,8 @@ public class sideBar {
         RadioButton selected = (RadioButton) this.group.getSelectedToggle();
         boolean vsComputer = selected.getText().equals("Human vs Computer");
         Difficulty selectedDiff = this.difficultyBox.getValue();
-        this.game.resetGame(vsComputer, selectedDiff);
+        BoardTheme selectedTheme = this.themeBox.getValue();
+        this.game.resetGame(vsComputer, selectedDiff, selectedTheme);
     }
 }
 

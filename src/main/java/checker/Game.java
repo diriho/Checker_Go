@@ -18,12 +18,17 @@ public class Game {
         this.gamePane = gamePane;
         this.sidePane = sidePane;
         new sideBar(this.sidePane, this);
-        this.resetGame(false, Difficulty.EASY); // Default to Human vs Human
+        this.resetGame(false, Difficulty.EASY, BoardTheme.CLASSIC); // Default to Human vs Human
     }
 
     public void resetGame(boolean vsComputer, Difficulty difficulty) {
+        // Overload for backward compatibility or default theme
+        this.resetGame(vsComputer, difficulty, BoardTheme.CLASSIC);
+    }
+    
+    public void resetGame(boolean vsComputer, Difficulty difficulty, BoardTheme theme) {
         this.gamePane.getChildren().clear();
-        this.initializeGameBoard();
+        this.initializeGameBoard(theme);
         this.initializePlayers(vsComputer, difficulty);
     }
 
@@ -58,9 +63,9 @@ public class Game {
     }
 
     //initalize game board with all the pierces
-    private void initializeGameBoard() {
+    private void initializeGameBoard(BoardTheme theme) {
         // Initialize the game board
-        Color[] boardColors = {Color.BEIGE, Color.BROWN};
+        Color[] boardColors = (theme != null) ? theme.getColors() : BoardTheme.CLASSIC.getColors();
         this.gameBoard = new Board(this.gamePane, boardColors);
 
     }

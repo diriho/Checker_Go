@@ -7,6 +7,7 @@ checker/PaneOrganizer.class
 checker/constants.class
 checker/PlayerInterface.class
 checker/App.class
+checker/BoardTheme.class
 checker/MoveStrategy.class
 checker/Move.class
 checker/EasyAI.class
