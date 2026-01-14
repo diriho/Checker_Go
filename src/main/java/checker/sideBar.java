@@ -70,6 +70,7 @@ public class sideBar {
         Button quitButton = new Button("Quit");
         quitButton.setStyle("-fx-background-color: #B22222; -fx-text-fill: white;");
         
+        
         // event handlers for all the buttons buttons
         confirmButton.setOnAction(e -> {
              this.handleStartGame(); // Apply settings immediately
@@ -120,7 +121,8 @@ public class sideBar {
             this.themeBox,
             new Label(" "),
             confirmButton,
-            startButton
+            startButton,
+            quitButton
         );
     }
     

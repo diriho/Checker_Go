@@ -29,8 +29,6 @@ The computer opponent (`ComputerPlayer`) has been refactored to use a Strategy P
 
 ## How to?
 Git repository: https://github.com/diriho/Checker_Go.git
-Then clone the repo to directory of your choice from the terminal and run:
-    ``git clone repository link``
 
 This program uses Maven as an automation and dependency management tool. 
 If you don't have Maven in installed on your computer, run the followig commands in your terminal

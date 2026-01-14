@@ -16,6 +16,8 @@ public class HumanPlayer implements PlayerInterface {
     protected Rectangle highlightRect;
     protected boolean isTurn;
     protected Runnable onTurnEnd;
+    protected boolean mustCapture;
+    protected Pierce forcedPiece;
 
     // Constructor for HumanPlayer class
     public HumanPlayer(Board board, Color color) {
@@ -24,13 +26,22 @@ public class HumanPlayer implements PlayerInterface {
         this.myPierces = this.getPiecesByColor(color);
         this.pieceCount = 20;
         this.isTurn = false;
+        this.mustCapture = false;
+        this.forcedPiece = null;
         this.setupHighlightRect();
         this.setUpMouseHandler();
     }
 
     public void setTurn(boolean isTurn) {
         this.isTurn = isTurn;
-        // Optional: Visual cue for turn
+        this.forcedPiece = null; // Reset forced piece on new turn
+        
+        if (isTurn) {
+            this.mustCapture = checkGlobalCaptures();
+            if (this.mustCapture) {
+                // System.out.println("Mandatory capture active for " + this.myColor);
+            }
+        }
     }
 
     public void setOnTurnEnd(Runnable onTurnEnd) {
@@ -66,13 +77,33 @@ public class HumanPlayer implements PlayerInterface {
         }
 
         Pierce p = this.board.getMyPierces()[row][col];
+        
+        // Multi-capture rule: If we are in the middle of a chain, lock onto forcedPiece
+        if (this.forcedPiece != null) {
+            // Can only interact if clicking the forced piece (to re-select/verify)
+            // or clicking a valid move target (handled by p==null branch)
+            if (p != null && p != this.forcedPiece) {
+                return; // Ignore clicks on other pieces
+            }
+        }
 
-        // If clicked on own piece, select it
+        // Selection Logic
         if (p != null && this.myPierces.contains(p)) {
+            // Mandatory Capture Rule: If capture exists, must select a piece that CAN capture
+            if (this.mustCapture) {
+                int[] coords = p.getPierceCoords(); 
+                int pr = (int) Math.round((coords[1] - 45) / 50.0);
+                int pc = (int) Math.round((coords[0] - 45) / 50.0);
+                if (!canCaptureAgain(pr, pc)) {
+                     // This piece cannot capture, but someone else can. Ignore selection.
+                     return;
+                }
+            }
+            
             this.selectedPiece = p;
             this.highlightSquare(row, col);
         }
-        // If clicked on empty square and have selection, try to move
+        // Move Logic
         else if (p == null && this.selectedPiece != null) {
             this.tryMoveTo(row, col);
         }
@@ -103,6 +134,8 @@ public class HumanPlayer implements PlayerInterface {
 
         // 1. Simple Move (1 step)
         if (colDiff == 1) {
+             if (this.mustCapture) return; // Mandatory capture rule: Block simple moves
+
              boolean validRow = false;
             // Black moves down (row increase), White moves up (row decrease)
             if (this.myColor.equals(Color.BLACK)) {
@@ -164,8 +197,11 @@ public class HumanPlayer implements PlayerInterface {
         // Check for double jump recursively
         if (canCaptureAgain(targetRow, targetCol)) {
              this.selectedPiece = this.board.getMyPierces()[targetRow][targetCol];
+             this.forcedPiece = this.selectedPiece; // Lock piece
+             this.mustCapture = true; // Reinforce capture state
              this.highlightSquare(targetRow, targetCol);
         } else {
+            this.forcedPiece = null;
             this.finalizeTurn();
         }
     }
@@ -201,6 +237,20 @@ public class HumanPlayer implements PlayerInterface {
         }
     }
     
+    private boolean checkGlobalCaptures() {
+        for (Pierce p : this.myPierces) {
+            int[] coords = p.getPierceCoords();
+            // Pixel to Grid
+            int r = (int) Math.round((coords[1] - 45) / 50.0);
+            int c = (int) Math.round((coords[0] - 45) / 50.0);
+            
+            if (canCaptureAgain(r, c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean canCaptureAgain(int r, int c) {
         Pierce p = this.board.getMyPierces()[r][c];
         boolean isKing = p.isKing();
