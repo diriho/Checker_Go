@@ -1,8 +1,9 @@
 package checker;
 
-import javafx.scene.paint.Color;
 import java.util.List;
 import java.util.Random;
+
+import javafx.scene.paint.Color;
 
 public class HardAI implements MoveStrategy {
     private Random random = new Random();
@@ -10,11 +11,37 @@ public class HardAI implements MoveStrategy {
 
     @Override
     public Move chooseMove(Board board, Color activeColor) {
+        return chooseMove(board, activeColor, null);
+    }
+
+    @Override
+    public Move chooseMove(Board board, Color activeColor, Pierce forcedPiece) {
         VirtualBoard vb = new VirtualBoard(board);
         boolean isWhite = activeColor.equals(Color.WHITE);
         byte myColorByte = isWhite ? VirtualBoard.WHITE_MAN : VirtualBoard.BLACK_MAN;
 
         List<VirtualBoard.VMove> moves = vb.getLegalMoves(myColorByte);
+        
+        // Filter for forced piece
+        if (forcedPiece != null) {
+            int fr = -1, fc = -1;
+            Pierce[][] pierces = board.getMyPierces();
+            for(int r=0; r<10; r++){
+                for(int c=0; c<10; c++){
+                    if(pierces[r][c] == forcedPiece) {
+                        fr = r; fc = c; break;
+                    }
+                }
+            }
+            if (fr != -1) {
+                final int r = fr, c = fc;
+                moves.removeIf(m -> m.fromR != r || m.fromC != c);
+            } else {
+                // Forced piece not found? Should not happen.
+                moves.clear(); 
+            }
+        }
+
         if (moves.isEmpty()) return null;
 
         double bestScore = Double.NEGATIVE_INFINITY;
@@ -28,6 +55,7 @@ public class HardAI implements MoveStrategy {
             if (!turnEnded) {
                 score = alphaBeta(vb, maxDepth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, true, isWhite);
             } else {
+                // If turn ends, it's opponent's turn (minimizing)
                 score = alphaBeta(vb, maxDepth - 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, false, isWhite);
             }
             

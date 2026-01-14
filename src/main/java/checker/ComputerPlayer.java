@@ -3,9 +3,6 @@ package checker;
 import javafx.animation.PauseTransition;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class ComputerPlayer extends HumanPlayer {
 
@@ -83,41 +80,24 @@ public class ComputerPlayer extends HumanPlayer {
     }
 
     private void continueMultiJump(Pierce p) {
-        // Use VirtualBoard to find only capture moves for this specific piece
-        VirtualBoard vb = new VirtualBoard(this.board);
-        int r = -1, c = -1;
-        // Find p coords
-        for(int i=0; i<10; i++){
-            for(int j=0; j<10; j++){
-                if(this.board.getMyPierces()[i][j] == p) { r=i; c=j; break; }
-            }
-        }
+        // Use strategy to pick the best continuation for this specific piece
+        // The strategy will respect the 'forcedPiece' constraint and pick the best path
+        Move nextMove = this.strategy.chooseMove(this.board, this.myColor, p);
         
-        if (r == -1) { finalizeTurn(); return; }
-        
-        byte pType = vb.grid[r][c];
-        List<VirtualBoard.VMove> moves = new ArrayList<>();
-        List<VirtualBoard.VMove> captures = new ArrayList<>();
-        
-        // We need to access the private helper 'addMovesForPiece' in VB or reimplement.
-        // Since VB methods are private, we can just use getLegalMoves and filter.
-        List<VirtualBoard.VMove> allMoves = vb.getLegalMoves(pType);
-        
-        for (VirtualBoard.VMove vm : allMoves) {
-            if (vm.fromR == r && vm.fromC == c && vm.isCapture) {
-                captures.add(vm);
-            }
-        }
-        
-        if (!captures.isEmpty()) {
-             // Just pick one (Handling branching in multi-jump is rare/complex)
-             VirtualBoard.VMove vNext = captures.get(0);
-             Move nextMove = convertToRealMove(vNext);
+        if (nextMove != null) {
              executeMove(nextMove);
         } else {
              finalizeTurn();
         }
     }
+    
+    // Legacy helper kept if needed, but strategy handles conversion now usually.
+    // Actually strategy returns Move, so we don't need convertToRealMove here anymore 
+    // UNLESS strategy is calling it. MoveStrategy impls call their own convert.
+    // So we can remove convertToRealMove from ComputerPlayer or keep it if used elsewhere.
+    // It is not used elsewhere in this file based on my reading.
+    // But I will keep it to minimize diff churn just in case, or remove it to be clean.
+    // Strategy returns 'checker.Move', executeMove takes 'checker.Move'.
     
     private Move convertToRealMove(VirtualBoard.VMove vm) {
         Pierce p = this.board.getMyPierces()[vm.fromR][vm.fromC];

@@ -1,19 +1,44 @@
 package checker;
 
-import javafx.scene.paint.Color;
 import java.util.List;
 import java.util.Random;
+
+import javafx.scene.paint.Color;
 
 public class EasyAI implements MoveStrategy {
     private Random random = new Random();
 
     @Override
     public Move chooseMove(Board board, Color activeColor) {
+        return chooseMove(board, activeColor, null);
+    }
+
+    @Override
+    public Move chooseMove(Board board, Color activeColor, Pierce forcedPiece) {
         // Use VirtualBoard to find legal moves
         VirtualBoard vb = new VirtualBoard(board);
         byte colorByte = (activeColor.equals(Color.WHITE)) ? VirtualBoard.WHITE_MAN : VirtualBoard.BLACK_MAN;
         
         List<VirtualBoard.VMove> vMoves = vb.getLegalMoves(colorByte);
+        
+        // Filter for forced piece
+        if (forcedPiece != null) {
+            int fr = -1, fc = -1;
+            Pierce[][] pierces = board.getMyPierces();
+            for(int r=0; r<10; r++){
+                for(int c=0; c<10; c++){
+                    if(pierces[r][c] == forcedPiece) {
+                        fr = r; fc = c; break;
+                    }
+                }
+            }
+            if (fr != -1) {
+                final int r = fr, c = fc;
+                vMoves.removeIf(m -> m.fromR != r || m.fromC != c);
+            } else {
+                vMoves.clear(); 
+            }
+        }
         
         if (vMoves.isEmpty()) return null;
 

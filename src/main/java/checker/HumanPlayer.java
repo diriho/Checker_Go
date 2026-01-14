@@ -2,8 +2,9 @@ package checker;
 
 import java.util.HashSet;
 import java.util.Set;
-import javafx.scene.paint.Color;
+
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class HumanPlayer implements PlayerInterface {
