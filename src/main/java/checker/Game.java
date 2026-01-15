@@ -33,42 +33,36 @@ public class Game {
     }
     
     // Check for Game Over conditions
-    public void onTurnComplete() {
-        if (checkGameOver()) {
+    public void onTurnComplete(Color activeColor) {
+        if (checkGameOver(activeColor)) {
             // Stop game
             this.player1.setTurn(false);
             this.player2.setTurn(false);
-            // System.out.println("Game Over");
-            // In a real app, show an Alert or restart dialog
         }
     }
 
-    private boolean checkGameOver() {
-        // active player to move is determined by logic, but here we check BOTH to see if one has 0 moves
-        // If current turn player has 0 moves, they lost.
-        // We need to know whose turn it is. 
-        // Currently Game doesn't track "turnColor", the Players have a boolean flag.
-        
-        // Let's check both players.
-        boolean p1CanMove = hasLegalMoves(Color.BLACK);
-        boolean p2CanMove = hasLegalMoves(Color.WHITE);
-        
-        if (!p1CanMove) {
-            displayWin(Color.WHITE);
-            return true;
-        }
-        if (!p2CanMove) {
-            displayWin(Color.BLACK);
-            return true;
-        }
-        return false;
-    }
-    
-    private boolean hasLegalMoves(Color color) {
-        // Use VirtualBoard to check for valid moves
+    private boolean checkGameOver(Color activeColor) {
         VirtualBoard vb = new VirtualBoard(this.gameBoard);
-        byte cByte = (color == Color.WHITE) ? VirtualBoard.WHITE_MAN : VirtualBoard.BLACK_MAN;
-        return !vb.getLegalMoves(cByte).isEmpty();
+        boolean isWhite = (activeColor == Color.WHITE);
+        byte activeByte = isWhite ? VirtualBoard.WHITE_MAN : VirtualBoard.BLACK_MAN;
+        
+        // 1. Check if active player has pieces
+        int myPieces = vb.getPieceCount(isWhite);
+        if (myPieces == 0) {
+            // Opponent captured all pieces -> active player (who has 0) loses
+            displayWin(isWhite ? Color.BLACK : Color.WHITE);
+            return true;
+        }
+
+        // 2. Check if active player has legal moves
+        boolean canMove = !vb.getLegalMoves(activeByte).isEmpty();
+        if (!canMove) {
+            // Have pieces but no moves -> Draw
+            displayDraw();
+            return true;
+        }
+        
+        return false;
     }
     
     private void displayWin(Color winner) {
@@ -78,6 +72,14 @@ public class Game {
         winMsg.setTranslateX(150);
         winMsg.setTranslateY(200);
         this.gamePane.getChildren().add(winMsg);
+    }
+
+    private void displayDraw() {
+        javafx.scene.control.Label drawMsg = new javafx.scene.control.Label("Draw!");
+        drawMsg.setStyle("-fx-font-size: 40px; -fx-text-fill: blue; -fx-background-color: rgba(255,255,255,0.8); -fx-padding: 20px;");
+        drawMsg.setTranslateX(200);
+        drawMsg.setTranslateY(200);
+        this.gamePane.getChildren().add(drawMsg);
     }
 
     private void initializePlayers(boolean vsComputer, Difficulty difficulty) {
@@ -93,22 +95,15 @@ public class Game {
 
         // Setup turn switching
         this.player1.setOnTurnEnd(() -> {
-            this.onTurnComplete(); // Check before switching? No, usually after turn, we check if NEXT player can move
-            // Actually standard is: Current player played. Next player is scanned.
-            // My checkGameOver scans both. So it handles "Next player stuck" immediately.
-            
-            // Check if game already ended
-            if (!hasLegalMoves(Color.WHITE) && !hasLegalMoves(Color.BLACK)) return; // Double block? Rare.
-            
             this.player1.setTurn(false);
             this.player2.setTurn(true);
-            this.onTurnComplete(); // Check if newly active player has moves (if not, they lose immediately)
+            this.onTurnComplete(Color.WHITE); // Check status for White
         });
 
         this.player2.setOnTurnEnd(() -> {
             this.player2.setTurn(false);
             this.player1.setTurn(true);
-            this.onTurnComplete();
+            this.onTurnComplete(Color.BLACK); // Check status for Black
         });
 
         // Start with Player 1 (Black)
