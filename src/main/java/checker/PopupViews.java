@@ -1,5 +1,6 @@
 package checker;
 
+// imports
 import java.io.File;
 import java.util.Random;
 
@@ -27,9 +28,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+// PopupViews class to manage different popup views in the application
 public class PopupViews {
     private PaneOrganizer organizer;
 
+    // Constructor for PopupViews class
     public PopupViews(PaneOrganizer organizer) {
         this.organizer = organizer;
     }

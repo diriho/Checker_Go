@@ -57,7 +57,6 @@ public class Pierce implements PieceInterface {
         this.view.setMinSize(40, 40);
     }
 
-    // getter methods
     // getter method of getting the pierce object
     public Node getNode() {
         return this.view;
