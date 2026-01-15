@@ -1,8 +1,9 @@
 package checker;
 
-import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.scene.paint.Color;
 
 /**
  * A lightweight board representation for AI calculations.
@@ -22,6 +23,7 @@ public class VirtualBoard {
     public static final byte WHITE_MAN = 3;
     public static final byte WHITE_KING = 4;
 
+    // Constructor for of the virtual version of the board to be used in AI calculations and decision making about the next move
     public VirtualBoard(Board realBoard) {
         this.grid = new byte[10][10];
         Pierce[][] pierces = realBoard.getMyPierces();

@@ -18,12 +18,14 @@ public class sideBar {
     private ComboBox<Difficulty> difficultyBox;
     private ComboBox<BoardTheme> themeBox;
 
+    // sideBar class constructor
     public sideBar(Pane pane, Game game) {
         this.pane = (VBox) pane;
         this.game = game;
         this.setupControls();
     }
 
+    // setup and initialize sidebar controls and game-related settings
     private void setupControls() {
         this.pane.setAlignment(Pos.TOP_CENTER);
         this.pane.setSpacing(10);
@@ -127,7 +129,6 @@ public class sideBar {
     }
     
     // helper method that handles start new game option
-    
     private void handleStartGame() {
         RadioButton selected = (RadioButton) this.group.getSelectedToggle();
         boolean vsComputer = selected.getText().equals("Human vs Computer");
