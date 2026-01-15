@@ -5,6 +5,7 @@ import java.util.Random;
 
 import javafx.scene.paint.Color;
 
+// MediumAI class implementing MoveStrategy for medium difficulty level
 public class MediumAI implements MoveStrategy {
     private Random random = new Random();
     private int maxDepth = 4;

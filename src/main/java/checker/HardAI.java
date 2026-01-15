@@ -5,6 +5,8 @@ import java.util.Random;
 
 import javafx.scene.paint.Color;
 
+
+// HardAI class implementing MoveStrategy for hard difficulty level
 public class HardAI implements MoveStrategy {
     private Random random = new Random();
     private int maxDepth = 6;

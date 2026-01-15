@@ -5,6 +5,7 @@ import java.util.Random;
 
 import javafx.scene.paint.Color;
 
+// EasyAI class implementing MoveStrategy for easy difficulty level
 public class EasyAI implements MoveStrategy {
     private Random random = new Random();
 
