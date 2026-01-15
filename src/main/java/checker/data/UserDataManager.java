@@ -90,9 +90,19 @@ public class UserDataManager {
     public int getLosses() { return Integer.parseInt(stats.getProperty("losses", "0")); }
     public int getStreak() { return Integer.parseInt(stats.getProperty("streak", "0")); }
     public String getDisplayName() { return stats.getProperty("display_name", "Player"); }
+    public String getProfilePicturePath() { return stats.getProperty("profile_pic", null); }
 
     public void setDisplayName(String name) {
         stats.setProperty("display_name", name);
+        saveStats();
+    }
+
+    public void setProfilePicturePath(String path) {
+        if (path != null) {
+            stats.setProperty("profile_pic", path);
+        } else {
+            stats.remove("profile_pic");
+        }
         saveStats();
     }
 

@@ -94,5 +94,8 @@ public class PaneOrganizer {
     public StackPane getRoot() {
         return this.root;
     }
+    
+    public Pane getGamePane() { return this.gamePane; }
+    public Pane getSidePane() { return this.sidePane; }
 }
   
