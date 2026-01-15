@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
  * 3 = White Man
  * 4 = White King
  */
+// VirtualBoard class to represent a lightweight version of the game board for AI calculations
 public class VirtualBoard {
     public byte[][] grid;
 
@@ -72,6 +73,7 @@ public class VirtualBoard {
         }
     }
 
+    // Get all legal moves for the given player color
     public List<VMove> getLegalMoves(byte playerColorType) { // BLACK_MAN or WHITE_MAN base
         boolean isWhite = (playerColorType == WHITE_MAN || playerColorType == WHITE_KING);
         List<VMove> moves = new ArrayList<>();
@@ -93,6 +95,7 @@ public class VirtualBoard {
         return moves;
     }
 
+    // Helper to add moves for a specific piece
     private void addMovesForPiece(int r, int c, byte piece, List<VMove> moves, List<VMove> captures) {
         boolean isKing = (piece == BLACK_KING || piece == WHITE_KING);
         boolean isWhite = (piece == WHITE_MAN || piece == WHITE_KING);
@@ -163,6 +166,7 @@ public class VirtualBoard {
         }
     }
 
+    // Helper to check simple move validity
     private void checkSimple(int r, int c, int nr, int nc, List<VMove> moves) {
         if (nc >= 0 && nc < 10 && grid[nr][nc] == EMPTY) {
             moves.add(new VMove(r, c, nr, nc, false));
