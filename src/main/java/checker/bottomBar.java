@@ -7,15 +7,13 @@ import javafx.scene.layout.Pane;
 
 public class bottomBar {
     private HBox pane;
+    private PaneOrganizer organizer;
 
-    public bottomBar(Pane parentPane) {
+    public bottomBar(Pane parentPane, PaneOrganizer organizer) {
+        this.organizer = organizer;
         if (parentPane instanceof HBox) {
             this.pane = (HBox) parentPane;
-        } else {
-             // Fallback if not passed an HBox, though PaneOrganizer uses HBox
-             // We can just add children to parentPane if generic
-             // But for alignment, let's assume it IS the pane to populate
-        }
+        } 
         
         setupButtons();
     }
@@ -29,6 +27,12 @@ public class bottomBar {
         Button aiChatBtn = createStyledButton("AI Chatbot", "🤖");
         Button settingsBtn = createStyledButton("Settings", "⚙️");
 
+        // Action Handlers
+        accountBtn.setOnAction(e -> this.organizer.showPopup(new PopupViews(organizer).getAccountView()));
+        connectBtn.setOnAction(e -> this.organizer.showPopup(new PopupViews(organizer).getConnectView()));
+        aiChatBtn.setOnAction(e -> this.organizer.showPopup(new PopupViews(organizer).getAIChatView()));
+        settingsBtn.setOnAction(e -> this.organizer.showPopup(new PopupViews(organizer).getSettingsView()));
+        
         this.pane.getChildren().addAll(accountBtn, connectBtn, aiChatBtn, settingsBtn);
     }
 

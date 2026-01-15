@@ -72,6 +72,17 @@ public class Game {
         winMsg.setTranslateX(150);
         winMsg.setTranslateY(200);
         this.gamePane.getChildren().add(winMsg);
+        
+        // Record Stats for Human Player (Assuming Human is Black/Player 1)
+        // If Human vs Human, tracking is ambiguous without full auth system.
+        // Assuming Player 1 (Black) is the "Main User"
+        checker.data.UserDataManager dm = checker.data.UserDataManager.getInstance();
+        if (winner == Color.BLACK) {
+             dm.recordGame(true);
+        } else {
+             // Only record loss if Human lost
+             dm.recordGame(false);
+        }
     }
 
     private void displayDraw() {

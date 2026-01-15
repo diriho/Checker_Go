@@ -14,9 +14,15 @@
 /Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/PieceInterface.java
 /Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/Pierce.java
 /Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/PlayerInterface.java
+/Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/PopupViews.java
 /Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/Square.java
 /Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/VirtualBoard.java
+/Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/ai/GeminiConfig.java
+/Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/ai/GeminiService.java
+/Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/auth/FirebaseAuthService.java
+/Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/auth/FirebaseConfig.java
 /Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/bottomBar.java
 /Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/constants.java
+/Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/data/UserDataManager.java
 /Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/kingPiece.java
 /Users/dondestiniriho/Desktop/Miscellanous/Projects/CheckerGo/src/main/java/checker/sideBar.java
