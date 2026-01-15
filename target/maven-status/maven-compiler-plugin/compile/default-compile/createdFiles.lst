@@ -1,5 +1,6 @@
 checker/sideBar.class
 checker/Board.class
+checker/bottomBar.class
 checker/Game.class
 checker/VirtualBoard$VMove.class
 checker/Difficulty.class

@@ -51,6 +51,7 @@ public class PaneOrganizer {
         this.bottomPane.setPrefHeight(100);
         this.bottomPane.setStyle("-fx-background-color: #D2B48C");
         this.root.setBottom(this.bottomPane);
+        new bottomBar(this.bottomPane);
     }   
 
     // Getter method for the root pane
