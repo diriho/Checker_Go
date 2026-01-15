@@ -2,7 +2,9 @@
 A Java-based Checkers game built with JavaFX featuring three AI difficulty levels (easy, intermediate, hard) and a secure authentication system that enables online multiplayer and performance tracking. The project also integrates an AI-powered strategy chatbot to help players learn tactics, analyze gameplay, and improve their chances of winning.
 
 ## Game Specifications
-The Confirm Settings logic has been adjusted so that any new settings—whether related to the game mode or the board color—are applied by starting a new game. When Start New Game is selected, the game begins immediately, while the control settings remain unchanged. This ensures that pressing Confirm only applies the updated settings without resetting the existing control configuration.
+Checkers is a two-player strategy board game played on an 8×8 board where each player starts with 12 pieces placed on the dark squares of the three rows closest to them. Players take turns moving one piece diagonally forward to an adjacent empty square; if an opponent’s piece is directly adjacent and the square beyond it is empty, the player must capture by jumping over that piece, removing it from the board. Captures are mandatory when available, and multiple jumps can be made in a single turn if successive captures are possible. When a piece reaches the opponent’s back row, it is promoted to a king, which can move and capture diagonally both forward and backward. The game ends when one player has no pieces left or no legal moves remaining, at which point the other player wins.
+
+
 
 ## Feature Integrations
 
@@ -23,6 +25,9 @@ The "Connect" feature simulates a modern online multiplayer experience, allowing
 *   **Matchmaking System**: An asynchronous search algorithm simulates finding active players, displaying their names, avatars, and ranks.
 *   **Private Rooms**: Users can create private lobbies with a **unique 6-character alphanumeric code** (e.g., `A7X92B`) to invite friends. The code is copyable for easy sharing.
 *   **Fallback Options**: If no online players are found, the system intelligently proposes playing against the computer or a local friend to keep the user engaged.
+
+### 4. Board customization
+The Confirm Settings logic has been adjusted so that any new settings—whether related to the game mode or the board color are applied by starting a new game. When Start New Game is selected, the game begins immediately, while the control settings remain unchanged. This ensures that pressing Confirm only applies the updated settings without resetting the existing control configuration.
 
 ## AI Difficulty Levels Implementation
 The computer opponent (`ComputerPlayer`) has been refactored to use a Strategy Pattern, allowing for pluggable AI implementations implementing the `MoveStrategy` interface.
