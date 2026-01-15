@@ -1,8 +1,28 @@
 # Checker_Go
 A Java-based Checkers game built with JavaFX featuring three AI difficulty levels (easy, intermediate, hard) and a secure authentication system that enables online multiplayer and performance tracking. The project also integrates an AI-powered strategy chatbot to help players learn tactics, analyze gameplay, and improve their chances of winning.
 
-## Game specifications
+## Game Specifications
 The Confirm Settings logic has been adjusted so that any new settings—whether related to the game mode or the board color—are applied by starting a new game. When Start New Game is selected, the game begins immediately, while the control settings remain unchanged. This ensures that pressing Confirm only applies the updated settings without resetting the existing control configuration.
+
+## Feature Integrations
+
+### 1. Authentication & Cloud Data (Firebase)
+The application now integrates with **Firebase Authentication** to provide secure user management and persisted profiles.
+*   **Sign Up/Sign In**: Users can create accounts with email/password or use a simulated Google Sign-In flow.
+*   **Persistent Stats**: User statistics (wins, losses, streaks) and profile customization (display name, profile picture) are stored locally and persisted across sessions using `UserDataManager`.
+*   **Personalization**: Users can upload custom profile pictures which are displayed in the Account and Matchmaking views.
+
+### 2. AI Strategy Coach (Google Gemini API)
+An intelligent chatbot powered by **Google's Gemini 1.5 Flash Model** has been integrated to serve as a personal checkers coach.
+*   **Advisory Role**: The AI analyzes the player's questions about strategy and provides advice in real-time.
+*   **Implementation**: Utilizes the `v1beta` REST API for fast, efficient responses directly within the JavaFX interface.
+*   **Privacy**: Users have the option to opt-in/out of sharing game data for analysis in the AI chat settings.
+
+### 3. Online Connect & Multiplayer
+The "Connect" feature simulates a modern online multiplayer experience, allowing players to find opponents or create private lobbies.
+*   **Matchmaking System**: An asynchronous search algorithm simulates finding active players, displaying their names, avatars, and ranks.
+*   **Private Rooms**: Users can create private lobbies with a **unique 6-character alphanumeric code** (e.g., `A7X92B`) to invite friends. The code is copyable for easy sharing.
+*   **Fallback Options**: If no online players are found, the system intelligently proposes playing against the computer or a local friend to keep the user engaged.
 
 ## AI Difficulty Levels Implementation
 The computer opponent (`ComputerPlayer`) has been refactored to use a Strategy Pattern, allowing for pluggable AI implementations implementing the `MoveStrategy` interface.
