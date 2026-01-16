@@ -169,7 +169,7 @@ public class PopupViews {
         
         // --- 3. Stats View ---
         VBox statsBox = new VBox(10);
-        statsBox.setStyle("-fx-background-color: #f5f5f5; -fx-padding: 10; -fx-background-radius: 5;");
+        statsBox.getStyleClass().add("stats-box");
         statsBox.setAlignment(Pos.CENTER);
 
         // Profile Picture
@@ -182,10 +182,10 @@ public class PopupViews {
         profileView.setClip(clip);
         
         Button changePicBtn = new Button("Change Picture");
-        changePicBtn.setStyle("-fx-font-size: 10px;");
+        changePicBtn.getStyleClass().add("small-action-btn");
         
         Label header = new Label("Statistics");
-        header.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
+        header.getStyleClass().add("header-label");
         
         Label winsLbl = new Label();
         Label lossLbl = new Label();

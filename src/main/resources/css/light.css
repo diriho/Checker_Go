@@ -52,6 +52,13 @@
     -fx-text-fill: black;
 }
 
+/* Stats Box Container (Original Style) */
+.stats-box {
+    -fx-background-color: #f5f5f5;
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+}
+
 /* AI Chatbot Section */
 .chat-scroll-pane {
     -fx-background-color: transparent;
@@ -62,4 +69,15 @@
 
 .chat-scroll-pane .viewport {
    -fx-background-color: white;
+}
+
+/* ComboBox in Light Mode (Default JavaFX style is usually fine, but explicit is safer) */
+.game-combo-box .list-cell {
+    -fx-text-fill: black;
+}
+
+/* Small Action Button (Change Picture) */
+.small-action-btn {
+    -fx-font-size: 10px;
+    /* Default button style is usually fine, but let's enforce simple look or leave default */
 }

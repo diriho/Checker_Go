@@ -68,6 +68,15 @@
     -fx-font-weight: bold;
 }
 
+/* Stats Box Container */
+.stats-box {
+    -fx-background-color: linear-gradient(to bottom right, #1f1f2e, #2b2b3c);
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+    -fx-border-color: #555;
+    -fx-border-radius: 5;
+}
+
 /* AI Chatbot Section */
 .chat-scroll-pane {
     -fx-background-color: transparent;
@@ -78,4 +87,38 @@
 
 .chat-scroll-pane .viewport {
    -fx-background-color: linear-gradient(to bottom right, #1f1f2e, #2b2b3c);
+}
+
+/* ComboBox in Dark Mode */
+.game-combo-box {
+    -fx-background-color: #333;
+    -fx-border-color: #555;
+    -fx-border-radius: 3;
+}
+
+.game-combo-box .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: #333;
+}
+
+.game-combo-box .list-view {
+    -fx-background-color: #333;
+    -fx-border-color: #555;
+}
+
+.game-combo-box:hover {
+    -fx-background-color: #444;
+}
+
+/* Small Action Button (Change Picture) */
+.small-action-btn {
+    -fx-font-size: 10px;
+    -fx-background-color: #444;
+    -fx-text-fill: white;
+    -fx-background-radius: 3;
+    -fx-cursor: hand;
+}
+
+.small-action-btn:hover {
+    -fx-background-color: #555;
 }

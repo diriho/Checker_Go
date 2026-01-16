@@ -8,8 +8,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 public class sideBar {
     private VBox pane;
@@ -42,23 +40,19 @@ public class sideBar {
         this.pane.setAlignment(Pos.TOP_CENTER);
         this.pane.setSpacing(10);
         
-        // --- Status Section ---
-        VBox statusBox = new VBox(5);
-        statusBox.setAlignment(Pos.CENTER);
-        statusBox.setStyle("-fx-background-color: rgba(255,255,255,0.5); -fx-padding: 10; -fx-background-radius: 5;");
-        
+        // --- Status Labels (Initialized here, added at bottom later) ---
         this.turnLabel = new Label("Turn: Black");
-        this.turnLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        this.turnLabel.setTextFill(javafx.scene.paint.Color.DARKBLUE);
+        this.turnLabel.getStyleClass().add("header-label");
         
         this.whiteCapturedLabel = new Label("White Captured: 0");
-        this.blackCapturedLabel = new Label("Black Captured: 0");
+        this.whiteCapturedLabel.getStyleClass().add("normal-text");
         
-        statusBox.getChildren().addAll(this.turnLabel, new javafx.scene.control.Separator(), this.whiteCapturedLabel, this.blackCapturedLabel);
-        this.pane.getChildren().add(statusBox);
-
+        this.blackCapturedLabel = new Label("Black Captured: 0");
+        this.blackCapturedLabel.getStyleClass().add("normal-text");
+        
+        // Label title setup
         Label title = new Label("Game Mode");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        title.getStyleClass().add("header-label");
 
         this.group = new ToggleGroup();
 
@@ -71,20 +65,22 @@ public class sideBar {
         
         // Difficulty controls
         Label diffLabel = new Label("Difficulty");
-        diffLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        diffLabel.getStyleClass().add("header-label"); // Use CSS
         
         this.difficultyBox = new ComboBox<>();
         this.difficultyBox.getItems().addAll(Difficulty.values());
         this.difficultyBox.setValue(Difficulty.EASY);
         this.difficultyBox.setDisable(true); // Disabled for HvH default
+        this.difficultyBox.getStyleClass().add("game-combo-box");
         
         // Theme controls
         Label themeLabel = new Label("Board Theme");
-        themeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        themeLabel.getStyleClass().add("header-label"); // Use CSS
         
         this.themeBox = new ComboBox<>();
         this.themeBox.getItems().addAll(BoardTheme.values());
         this.themeBox.setValue(BoardTheme.CLASSIC);
+        this.themeBox.getStyleClass().add("game-combo-box");
 
         // settings confirmation button 
         Button confirmButton = new Button("Confirm Settings");
@@ -138,7 +134,11 @@ public class sideBar {
         });
 
         this.pane.getChildren().addAll(
-            new Label(" "), 
+            new Label(" "),
+            this.turnLabel, 
+            this.whiteCapturedLabel, 
+            this.blackCapturedLabel,
+            new javafx.scene.control.Separator(),
             title, 
             hvh, 
             hvc, 
