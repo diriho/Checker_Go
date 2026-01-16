@@ -38,33 +38,7 @@ public class bottomBar {
 
     private Button createStyledButton(String text, String icon) {
         Button btn = new Button(icon + " " + text);
-        
-        // Style: 
-        // Background: Darker shade of the bar (#D2B48C is Tan, let's use a Brown or Sienna)
-        // Text: White or Dark Brown
-        String normalStyle = 
-            "-fx-background-color: #8B4513;" + // SaddleBrown
-            "-fx-text-fill: white;" +
-            "-fx-font-size: 14px;" +
-            "-fx-font-weight: bold;" +
-            "-fx-background-radius: 10;" +
-            "-fx-min-width: 120px;" +
-            "-fx-min-height: 40px;";
-            
-        String hoverStyle = 
-            "-fx-background-color: #A0522D;" + // Sienna (slightly lighter)
-            "-fx-text-fill: white;" +
-            "-fx-font-size: 14px;" +
-            "-fx-font-weight: bold;" +
-            "-fx-background-radius: 10;" +
-            "-fx-min-width: 120px;" +
-            "-fx-min-height: 40px;";
-
-        btn.setStyle(normalStyle);
-
-        btn.setOnMouseEntered(e -> btn.setStyle(hoverStyle));
-        btn.setOnMouseExited(e -> btn.setStyle(normalStyle));
-        
+        btn.getStyleClass().add("bottom-bar-btn");
         return btn;
     }
 }

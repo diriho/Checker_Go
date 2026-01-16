@@ -76,6 +76,49 @@
     -fx-text-fill: black;
 }
 
+/* Sidebar Buttons (Light Mode) */
+.sidebar-btn {
+    -fx-text-fill: white;
+    /* Soft rounding for both modes as requested "rounding thing... like the buttons on the bottom pane" */
+    -fx-background-radius: 10; 
+    -fx-font-weight: bold;
+    -fx-padding: 8 16;
+}
+
+.confirm-btn {
+    -fx-background-color: #2E8B57;
+}
+.confirm-btn:hover { -fx-background-color: #3cb371; }
+
+.start-btn {
+    -fx-background-color: #8B4513;
+}
+.start-btn:hover { -fx-background-color: #a0522d; }
+
+.quit-btn {
+    -fx-background-color: #B22222;
+}
+.quit-btn:hover { -fx-background-color: #cd5c5c; }
+
+/* Bottom Bar Buttons (Light Mode) */
+.bottom-bar-btn {
+    -fx-background-color: #8B4513;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-min-width: 120px;
+    -fx-min-height: 40px;
+    -fx-cursor: hand;
+}
+
+.bottom-bar-btn:hover {
+    -fx-background-color: #A0522D;
+}
+.bottom-bar-btn:pressed {
+    -fx-background-color: #5a2d0c;
+}
+
 /* Small Action Button (Change Picture) */
 .small-action-btn {
     -fx-font-size: 10px;

@@ -84,16 +84,16 @@ public class sideBar {
 
         // settings confirmation button 
         Button confirmButton = new Button("Confirm Settings");
-        confirmButton.setStyle("-fx-background-color: #2E8B57; -fx-text-fill: white;");
+        confirmButton.getStyleClass().addAll("sidebar-btn", "confirm-btn");
         
         // restart game button
         Button startButton = new Button("Start New Game");
-        startButton.setStyle("-fx-background-color: #8B4513; -fx-text-fill: white;");
+        startButton.getStyleClass().addAll("sidebar-btn", "start-btn");
         startButton.setDisable(true); // Initially disabled
 
         // add a quit   button 
         Button quitButton = new Button("Quit");
-        quitButton.setStyle("-fx-background-color: #B22222; -fx-text-fill: white;");
+        quitButton.getStyleClass().addAll("sidebar-btn", "quit-btn");
         
         
         // event handlers for all the buttons buttons
