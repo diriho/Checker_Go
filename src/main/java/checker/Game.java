@@ -8,17 +8,32 @@ public class Game {
     private Board gameBoard;
     private Pane gamePane;
     private Pane sidePane;
+    private sideBar sideBar; // Stored reference
     private HumanPlayer player1;
     private HumanPlayer player2;
-
-    
 
     // Game constructor
     public Game(Pane gamePane, Pane sidePane) {
         this.gamePane = gamePane;
         this.sidePane = sidePane;
-        new sideBar(this.sidePane, this);
+        this.sideBar = new sideBar(this.sidePane, this); // Store it
         this.resetGame(false, Difficulty.EASY, BoardTheme.CLASSIC); // Default to Human vs Human
+    }
+    
+    private void updateSidebar(Color nextTurn) {
+        if (this.sideBar == null || this.gameBoard == null) return;
+        
+        VirtualBoard vb = new VirtualBoard(this.gameBoard);
+        int currentWhite = vb.getPieceCount(true);
+        int currentBlack = vb.getPieceCount(false);
+        
+        // Eaten count (starts with 20 pieces each on 10x10 board)
+        int whiteEaten = 20 - currentBlack; // White ate Black's pieces
+        int blackEaten = 20 - currentWhite; // Black ate White's pieces
+        
+        String turnText = (nextTurn == Color.WHITE) ? "Turn: White" : "Turn: Black";
+        
+        this.sideBar.updateGameStats(turnText, whiteEaten, blackEaten);
     }
 
     public void resetGame(boolean vsComputer, Difficulty difficulty) {
@@ -30,10 +45,14 @@ public class Game {
         this.gamePane.getChildren().clear();
         this.initializeGameBoard(theme);
         this.initializePlayers(vsComputer, difficulty);
+        this.updateSidebar(Color.BLACK); // Always starts with Black
     }
     
     // Check for Game Over conditions
     public void onTurnComplete(Color activeColor) {
+        // Update stats first
+        this.updateSidebar(activeColor);
+        
         if (checkGameOver(activeColor)) {
             // Stop game
             this.player1.setTurn(false);

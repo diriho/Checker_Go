@@ -151,20 +151,8 @@ public class HumanPlayer implements PlayerInterface {
         } 
         // 2. Capture Move (2 steps)
         else if (colDiff == 2 && Math.abs(rowDiff) == 2) {
-             boolean isKing = this.selectedPiece.isKing();
-             boolean validDirection = false;
-             int rDiff = targetRow - oldRow;
+             boolean validDirection = true; // Allow capturing in any direction (forward or backward)
              
-             if (isKing) {
-                 validDirection = true;
-             } else {
-                 if (this.myColor.equals(Color.BLACK)) {
-                     validDirection = (rDiff == 2);
-                 } else { // White
-                     validDirection = (rDiff == -2);
-                 }
-             }
-
              if (validDirection) {
                  // Calculate jumped square
                  int jumpedRow = (oldRow + targetRow) / 2;
@@ -239,6 +227,16 @@ public class HumanPlayer implements PlayerInterface {
     }
     
     private boolean checkGlobalCaptures() {
+        // Use removeIf to clean up any "ghost" pieces that might have been captured
+        // but not removed from our local set yet (sync with Board state).
+        this.myPierces.removeIf(p -> {
+            int[] coords = p.getPierceCoords();
+            int r = (int) Math.round((coords[1] - 45) / 50.0);
+            int c = (int) Math.round((coords[0] - 45) / 50.0);
+            if (r < 0 || r >= 10 || c < 0 || c >= 10) return true; // Out of bounds
+            return this.board.getMyPierces()[r][c] != p; // Not on board anymore
+        });
+
         for (Pierce p : this.myPierces) {
             int[] coords = p.getPierceCoords();
             // Pixel to Grid
@@ -254,6 +252,9 @@ public class HumanPlayer implements PlayerInterface {
 
     private boolean canCaptureAgain(int r, int c) {
         Pierce p = this.board.getMyPierces()[r][c];
+        if (p == null) {
+            return false;
+        }
         boolean isKing = p.isKing();
         int direction = (this.myColor.equals(Color.WHITE)) ? -1 : 1;
 
@@ -262,15 +263,9 @@ public class HumanPlayer implements PlayerInterface {
         int[] dc = {-2, 2, -2, 2};
         
         for (int i = 0; i < 4; i++) {
-            // Filter invalid directions for regular pieces
-            int rowStep = dr[i];
-            boolean directionOk = isKing; 
-            if (!isKing) {
-                 if (direction == -1 && rowStep == -2) directionOk = true;
-                 if (direction == 1 && rowStep == 2) directionOk = true;
-            }
-            if (!directionOk) continue;
-
+            // Check all directions for capture, regardless of king status
+            // Filter invalid directions for regular pieces -> now REMOVED to allow backward capture
+            
             int nr = r + dr[i];
             int nc = c + dc[i];
             

@@ -118,13 +118,8 @@ public class VirtualBoard {
             int nr = r + dr[i];
             int nc = c + dc[i];
             
-            // Direction check
-            if (!isKing) {
-               // Must move forward
-               if (isWhite && dr[i] > 0) continue;
-               if (!isWhite && dr[i] < 0) continue;
-            }
-
+            // Direction check REMOVED to allow backward captures
+            
             if (nr >= 0 && nr < 10 && nc >= 0 && nc < 10) {
                  if (grid[nr][nc] == EMPTY) {
                      int midR = (r + nr) / 2;

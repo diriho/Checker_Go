@@ -13,7 +13,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Separator;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -626,20 +625,32 @@ public class PopupViews {
 
     public Node getAIChatView() {
         VBox content = new VBox(15);
+        content.setPadding(new Insets(10));
         
         CheckBox allowData = new CheckBox("Allow AI to use my game data for analysis");
         allowData.setSelected(true);
         
-        TextArea chatArea = new TextArea();
-        chatArea.setEditable(false);
-        chatArea.setText("Coach: Hello! I've analyzed your stats. Ask me for strategy advice!\n");
-        chatArea.setPrefHeight(200);
-        chatArea.setWrapText(true);
+        // Chat Feed Container
+        VBox messagesList = new VBox(10);
+        messagesList.setPadding(new Insets(10));
+        messagesList.setFillWidth(true);
+        
+        javafx.scene.control.ScrollPane scrollPane = new javafx.scene.control.ScrollPane(messagesList);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPrefHeight(350);
+        scrollPane.setVbarPolicy(javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: white; -fx-border-color: #ddd; -fx-border-radius: 5;");
+        
+        // Initial Message
+        addChatMessage(messagesList, "Hello! I've analyzed your stats. Ask me for strategy advice!", false);
         
         HBox inputBox = new HBox(10);
         TextField msgInput = new TextField();
+        msgInput.setPromptText("Type your question...");
         HBox.setHgrow(msgInput, Priority.ALWAYS);
         Button sendBtn = new Button("Ask");
+        sendBtn.setStyle("-fx-background-color: #0078FF; -fx-text-fill: white; -fx-font-weight: bold;");
         inputBox.getChildren().addAll(msgInput, sendBtn);
         
         checker.ai.GeminiService aiService = new checker.ai.GeminiService();
@@ -647,25 +658,65 @@ public class PopupViews {
         sendBtn.setOnAction(e -> {
             String q = msgInput.getText().trim();
             if (!q.isEmpty()) {
-                chatArea.appendText("You: " + q + "\n");
+                // User Message
+                addChatMessage(messagesList, q, true);
                 msgInput.clear();
                 
+                // Auto Scroll logic (delay slightly to allow layout update)
+                PauseTransition scrollDelay = new PauseTransition(Duration.millis(100));
+                scrollDelay.setOnFinished(ev -> scrollPane.setVvalue(1.0));
+                scrollDelay.play();
+                
                 if (allowData.isSelected()) {
-                     chatArea.appendText("Coach: Thinking...\n");
+                     // Temporary "Thinking" indicator
+                     Label thinkingLbl = new Label("Coach is typing...");
+                     thinkingLbl.setStyle("-fx-text-fill: gray; -fx-font-style: italic; -fx-font-size: 12px; -fx-padding: 0 0 0 10;");
+                     messagesList.getChildren().add(thinkingLbl);
                      
                      // Call Gemini Async
                      aiService.askForAdvice(q).thenAccept(advice -> {
                          javafx.application.Platform.runLater(() -> {
-                             chatArea.appendText("Coach: " + advice + "\n\n");
+                             messagesList.getChildren().remove(thinkingLbl);
+                             // Clean up Markdown logic if raw text
+                             String cleanAdvice = advice.replace("*", "").trim(); 
+                             addChatMessage(messagesList, cleanAdvice, false);
+                             
+                             PauseTransition scrollDelay2 = new PauseTransition(Duration.millis(100));
+                             scrollDelay2.setOnFinished(ev -> scrollPane.setVvalue(1.0));
+                             scrollDelay2.play();
                          });
                      });
                 } else {
-                     chatArea.appendText("Coach: Please enable data analysis permissions so I can help.\n");
+                     addChatMessage(messagesList, "Please enable data analysis permissions so I can help.", false);
                 }
             }
         });
         
-        content.getChildren().addAll(allowData, chatArea, inputBox);
+        // Trigger send on Enter key
+        msgInput.setOnAction(e -> sendBtn.fire());
+        
+        content.getChildren().addAll(allowData, scrollPane, inputBox);
         return createBaseWindow("AI Strategy Chat", content);
+    }
+    
+    private void addChatMessage(VBox container, String text, boolean isUser) {
+        HBox row = new HBox();
+        row.setMaxWidth(Double.MAX_VALUE); // Occupy full width of container
+        
+        Label msgBubble = new Label(text);
+        msgBubble.setWrapText(true);
+        msgBubble.setMaxWidth(280); // Limit bubble width for readability
+        msgBubble.setPadding(new Insets(10));
+        
+        if (isUser) {
+            row.setAlignment(Pos.CENTER_RIGHT);
+            msgBubble.setStyle("-fx-background-color: #0078FF; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-size: 13px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);");
+        } else {
+            row.setAlignment(Pos.CENTER_LEFT);
+            msgBubble.setStyle("-fx-background-color: #F0F0F0; -fx-text-fill: black; -fx-background-radius: 15; -fx-font-size: 13px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);");
+        }
+        
+        row.getChildren().add(msgBubble);
+        container.getChildren().add(row);
     }
 }

@@ -7,6 +7,7 @@ The Settings module handles global application preferences and provides informat
 1.  **UI Layer (`PopupViews.java`)**:
     - **Architecture**: A `VBox` separated into an "About" section and a "Settings" section using a `Separator` node.
     - **About Section**: Contains a `Text` node with wrapping enabled to display the history and description of CheckerGo.
+        - **Mandatory Captures**: The description explicitly notes that captures are mandatory. If a player looks to capture a piece, they *must* do it; this rule is enforced by the game engine.
     - **Settings Section**: Contains `CheckBox` controls for:
         - Enable Sound Effects
         - Enable Animations (Defaulted to `true`)

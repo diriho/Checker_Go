@@ -17,6 +17,11 @@ public class sideBar {
     private ToggleGroup group;
     private ComboBox<Difficulty> difficultyBox;
     private ComboBox<BoardTheme> themeBox;
+    
+    // Status Labels
+    private Label turnLabel;
+    private Label whiteCapturedLabel;
+    private Label blackCapturedLabel;
 
     // sideBar class constructor
     public sideBar(Pane pane, Game game) {
@@ -24,11 +29,33 @@ public class sideBar {
         this.game = game;
         this.setupControls();
     }
+    
+    // function that updates game state: whose turn it is and pieces captured by each player
+    public void updateGameStats(String turnText, int whiteEaten, int blackEaten) {
+        if (turnLabel != null) turnLabel.setText(turnText);
+        if (whiteCapturedLabel != null) whiteCapturedLabel.setText("White Captured: " + whiteEaten);
+        if (blackCapturedLabel != null) blackCapturedLabel.setText("Black Captured: " + blackEaten);
+    }
 
     // setup and initialize sidebar controls and game-related settings
     private void setupControls() {
         this.pane.setAlignment(Pos.TOP_CENTER);
         this.pane.setSpacing(10);
+        
+        // --- Status Section ---
+        VBox statusBox = new VBox(5);
+        statusBox.setAlignment(Pos.CENTER);
+        statusBox.setStyle("-fx-background-color: rgba(255,255,255,0.5); -fx-padding: 10; -fx-background-radius: 5;");
+        
+        this.turnLabel = new Label("Turn: Black");
+        this.turnLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        this.turnLabel.setTextFill(javafx.scene.paint.Color.DARKBLUE);
+        
+        this.whiteCapturedLabel = new Label("White Captured: 0");
+        this.blackCapturedLabel = new Label("Black Captured: 0");
+        
+        statusBox.getChildren().addAll(this.turnLabel, new javafx.scene.control.Separator(), this.whiteCapturedLabel, this.blackCapturedLabel);
+        this.pane.getChildren().add(statusBox);
 
         Label title = new Label("Game Mode");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 16));
