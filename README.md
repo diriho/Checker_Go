@@ -29,6 +29,12 @@ The "Connect" feature simulates a modern online multiplayer experience, allowing
 ### 4. Board customization
 The Confirm Settings logic has been adjusted so that any new settings—whether related to the game mode or the board color are applied by starting a new game. When Start New Game is selected, the game begins immediately, while the control settings remain unchanged. This ensures that pressing Confirm only applies the updated settings without resetting the existing control configuration.
 
+### 5. Dark Mode & UI Theming
+A fully integrated **Dark Mode** has been added to enhance visual comfort during gameplay.
+*   **Dynamic Theming**: Users can toggle between Light and Dark modes instantly via the settings menu.
+*   **CSS-Based Styling**: The application utilizes a robust CSS architecture (`light.css` and `dark.css`) managed by a `ThemeManager` to switch styles dynamically without restarting the application.
+*   **Consistent UI**: All UI components, including buttons, dropdowns, and stats panels, have been standardized with rounded corners and hover effects to maintain a cohesive look across both themes.
+
 ## AI Difficulty Levels Implementation
 The computer opponent (`ComputerPlayer`) has been refactored to use a Strategy Pattern, allowing for pluggable AI implementations implementing the `MoveStrategy` interface.
 
