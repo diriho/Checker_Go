@@ -19,6 +19,7 @@ checker/bottomBar.class
 checker/ai/GeminiService.class
 checker/PlayerInterface.class
 checker/BoardTheme.class
+checker/ThemeManager.class
 checker/MoveStrategy.class
 checker/auth/FirebaseConfig.class
 checker/ComputerPlayer.class

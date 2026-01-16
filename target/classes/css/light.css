@@ -1,3 +1,11 @@
+.label {
+    -fx-text-fill: black;
+}
+
+.text {
+    -fx-fill: black;
+}
+
 .game-pane {
     -fx-background-color: beige;
 }
@@ -37,4 +45,21 @@
 
 .normal-text {
     -fx-fill: black;
+}
+
+/* Statistics Labels */
+.stats-label {
+    -fx-text-fill: black;
+}
+
+/* AI Chatbot Section */
+.chat-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5;
+}
+
+.chat-scroll-pane .viewport {
+   -fx-background-color: white;
 }

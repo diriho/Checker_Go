@@ -190,6 +190,11 @@ public class PopupViews {
         Label winsLbl = new Label();
         Label lossLbl = new Label();
         Label streakLbl = new Label();
+
+        // Style classes for stats labels
+        winsLbl.getStyleClass().add("stats-label");
+        lossLbl.getStyleClass().add("stats-label");
+        streakLbl.getStyleClass().add("stats-label");
         
         statsBox.getChildren().addAll(header, profileView, changePicBtn, winsLbl, lossLbl, streakLbl);
         
@@ -648,7 +653,7 @@ public class PopupViews {
         scrollPane.setPrefHeight(350);
         scrollPane.setVbarPolicy(javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: white; -fx-border-color: #ddd; -fx-border-radius: 5;");
+        scrollPane.getStyleClass().add("chat-scroll-pane");
         
         // Initial Message
         addChatMessage(messagesList, "Hello! I've analyzed your stats. Ask me for strategy advice!", false);
