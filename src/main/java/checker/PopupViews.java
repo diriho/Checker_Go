@@ -44,21 +44,21 @@ public class PopupViews {
         VBox window = new VBox(15);
         window.setMaxSize(500, 400); // Standard size
         window.setPadding(new Insets(20));
-        window.setStyle("-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);");
+        window.getStyleClass().add("popup-window");
         
         // Header
         HBox header = new HBox();
         header.setAlignment(Pos.CENTER_RIGHT);
         
         Label titleLabel = new Label(title);
-        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333;");
+        titleLabel.getStyleClass().add("title-label");
         
         // Invisible spacer to center title if needed, but simple is close button on right
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         
         Button closeBtn = new Button("✕");
-        closeBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #999; -fx-font-size: 18px; -fx-cursor: hand;");
+        closeBtn.getStyleClass().add("close-btn");
         closeBtn.setOnAction(e -> organizer.closePopup());
         
         header.getChildren().addAll(titleLabel, spacer, closeBtn);
@@ -82,23 +82,31 @@ public class PopupViews {
         // About Section
         VBox aboutBox = new VBox(5);
         Label aboutHeader = new Label("About CheckerGo");
-        aboutHeader.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
+        aboutHeader.getStyleClass().add("header-label");
         Text aboutText = new Text("CheckerGo is a modern take on the classic game of Checkers.\n" +
                                 "Enjoy playing against friends or challenging our adaptive AI.\n" + 
                                 "Features include multiple themes, difficulty levels, and strict rule enforcement.");
         aboutText.setWrappingWidth(440);
+        aboutText.getStyleClass().add("normal-text");
         aboutBox.getChildren().addAll(aboutHeader, aboutText);
         
         // Settings Section
         VBox settingsBox = new VBox(10);
         Label settingsHeader = new Label("Game Settings");
-        settingsHeader.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
+        settingsHeader.getStyleClass().add("header-label");
         
         CheckBox soundToggle = new CheckBox("Enable Sound Effects");
         CheckBox animationsToggle = new CheckBox("Enable Animations");
         animationsToggle.setSelected(true);
         
-        settingsBox.getChildren().addAll(settingsHeader, soundToggle, animationsToggle);
+        // Dark Mode Toggle
+        CheckBox darkModeToggle = new CheckBox("Enable Dark Mode");
+        darkModeToggle.setSelected(ThemeManager.isDarkMode());
+        darkModeToggle.setOnAction(e -> {
+            ThemeManager.toggleTheme(content.getScene());
+        });
+
+        settingsBox.getChildren().addAll(settingsHeader, soundToggle, animationsToggle, darkModeToggle);
         
         content.getChildren().addAll(aboutBox, new Separator(), settingsBox);
         return createBaseWindow("Settings", content);

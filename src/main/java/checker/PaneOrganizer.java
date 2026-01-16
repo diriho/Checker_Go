@@ -66,7 +66,7 @@ public class PaneOrganizer {
     private void setGamePane() {
         this.gamePane = new Pane();
         this.gamePane.setPrefSize(550, 550);
-        this.gamePane.setStyle("-fx-background-color: beige");
+        this.gamePane.getStyleClass().add("game-pane");
         this.gamePane.setFocusTraversable(true);
         this.mainLayout.setCenter(this.gamePane); 
         new Game(this.gamePane, this.sidePane);
@@ -77,7 +77,7 @@ public class PaneOrganizer {
     private void setSidePane() {
         this.sidePane = new VBox();
         this.sidePane.setPrefWidth(200);
-        this.sidePane.setStyle("-fx-background-color: #dcd4bbff");
+        this.sidePane.getStyleClass().add("side-pane");
         this.mainLayout.setRight(this.sidePane); 
     }   
 
@@ -85,7 +85,7 @@ public class PaneOrganizer {
     private void setBottomPane() {
         this.bottomPane = new HBox();
         this.bottomPane.setPrefHeight(100);
-        this.bottomPane.setStyle("-fx-background-color: #D2B48C");
+        this.bottomPane.getStyleClass().add("bottom-pane");
         this.mainLayout.setBottom(this.bottomPane);
         new bottomBar(this.bottomPane, this); // Pass this
     }   

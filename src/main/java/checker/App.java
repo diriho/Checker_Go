@@ -9,6 +9,10 @@ public class App extends Application {
     public void start(Stage stage) {
         PaneOrganizer paneOrganizer = new PaneOrganizer();  
         Scene scene = new Scene(paneOrganizer.getRoot(), 750, 650);
+        
+        // Apply initial theme
+        ThemeManager.applyTheme(scene);
+        
         stage.setTitle("Checker Go!");  
         stage.setScene(scene);
         stage.show();

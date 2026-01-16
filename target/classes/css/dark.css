@@ -1,0 +1,45 @@
+.game-pane {
+    -fx-background-color: #2b2b2b;
+}
+
+.side-pane {
+    -fx-background-color: #1e1e1e;
+}
+
+.bottom-pane {
+    -fx-background-color: #3e3e3e;
+}
+
+.popup-window {
+    -fx-background-color: #333;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.title-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #eee;
+}
+
+.close-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #aaa;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+}
+
+.header-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
+
+.normal-text {
+    -fx-fill: white;
+}
+
+/* Customizing CheckBox for dark mode */
+.check-box {
+    -fx-text-fill: white;
+}

@@ -1,0 +1,40 @@
+.game-pane {
+    -fx-background-color: beige;
+}
+
+.side-pane {
+    -fx-background-color: #dcd4bbff;
+}
+
+.bottom-pane {
+    -fx-background-color: #D2B48C;
+}
+
+.popup-window {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.title-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.close-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #999;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+}
+
+.header-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: black;
+}
+
+.normal-text {
+    -fx-fill: black;
+}
