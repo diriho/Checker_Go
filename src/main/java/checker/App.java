@@ -8,7 +8,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         PaneOrganizer paneOrganizer = new PaneOrganizer();  
-        Scene scene = new Scene(paneOrganizer.getRoot(), 750, 650);
+        Scene scene = new Scene(paneOrganizer.getRoot(), constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT);
         
         // Apply initial theme
         ThemeManager.applyTheme(scene);

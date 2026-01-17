@@ -22,7 +22,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import checker.ai.GeminiConfig;
 import checker.ai.GeminiService;
 import checker.data.UserDataManager;
 
@@ -85,7 +84,7 @@ public class GeminiApiTest {
         verify(mockHttpClient).send(requestCaptor.capture(), any(HttpResponse.BodyHandler.class));
         
         HttpRequest sentRequest = requestCaptor.getValue();
-        assertEquals(URI.create(GeminiConfig.API_URL), sentRequest.uri());
+        assertEquals(URI.create(constants.GEMINI_API_URL), sentRequest.uri());
         assertEquals("POST", sentRequest.method());
     }
 

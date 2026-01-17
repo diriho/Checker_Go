@@ -5,7 +5,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+
 import org.json.JSONObject;
+
+import checker.constants;
 
 public class FirebaseAuthService {
     private final HttpClient httpClient;
@@ -24,7 +27,7 @@ public class FirebaseAuthService {
         payload.put("password", password);
         payload.put("returnSecureToken", true);
 
-        return sendRequest(FirebaseConfig.SIGN_UP_URL, payload);
+        return sendRequest(constants.FIREBASE_SIGN_UP_URL, payload);
     }
 
     /**
@@ -37,7 +40,7 @@ public class FirebaseAuthService {
         payload.put("password", password);
         payload.put("returnSecureToken", true);
 
-        return sendRequest(FirebaseConfig.SIGN_IN_URL, payload);
+        return sendRequest(constants.FIREBASE_SIGN_IN_URL, payload);
     }
 
     private JSONObject sendRequest(String url, JSONObject payload) {

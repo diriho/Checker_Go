@@ -65,7 +65,7 @@ public class PaneOrganizer {
     // setup the main game pane
     private void setGamePane() {
         this.gamePane = new Pane();
-        this.gamePane.setPrefSize(550, 550);
+        this.gamePane.setPrefSize(constants.GAME_PANE_WIDTH, constants.GAME_PANE_HEIGHT);
         this.gamePane.getStyleClass().add("game-pane");
         this.gamePane.setFocusTraversable(true);
         this.mainLayout.setCenter(this.gamePane); 
@@ -76,7 +76,7 @@ public class PaneOrganizer {
     // set the side pane which will handle controls and information display
     private void setSidePane() {
         this.sidePane = new VBox();
-        this.sidePane.setPrefWidth(200);
+        this.sidePane.setPrefWidth(constants.SIDE_PANE_WIDTH);
         this.sidePane.getStyleClass().add("side-pane");
         this.mainLayout.setRight(this.sidePane); 
     }   
@@ -84,7 +84,7 @@ public class PaneOrganizer {
     // set the bottom pane for restart, quit, and menu options
     private void setBottomPane() {
         this.bottomPane = new HBox();
-        this.bottomPane.setPrefHeight(100);
+        this.bottomPane.setPrefHeight(constants.BOTTOM_PANE_HEIGHT);
         this.bottomPane.getStyleClass().add("bottom-pane");
         this.mainLayout.setBottom(this.bottomPane);
         new bottomBar(this.bottomPane, this); // Pass this

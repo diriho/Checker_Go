@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import checker.constants;
 import checker.data.UserDataManager;
 
 public class GeminiService {
@@ -79,7 +80,7 @@ public class GeminiService {
 
                 // Create Request
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(GeminiConfig.API_URL))
+                        .uri(URI.create(constants.GEMINI_API_URL))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString(), StandardCharsets.UTF_8))
                         .build();

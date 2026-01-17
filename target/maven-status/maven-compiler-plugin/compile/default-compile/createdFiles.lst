@@ -6,7 +6,6 @@ checker/PaneOrganizer.class
 checker/constants.class
 checker/App.class
 checker/Move.class
-checker/ai/GeminiConfig.class
 checker/EasyAI.class
 checker/Square.class
 checker/HumanPlayer.class
@@ -21,7 +20,6 @@ checker/PlayerInterface.class
 checker/BoardTheme.class
 checker/ThemeManager.class
 checker/MoveStrategy.class
-checker/auth/FirebaseConfig.class
 checker/ComputerPlayer.class
 checker/data/UserDataManager.class
 checker/Pierce.class

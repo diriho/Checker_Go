@@ -7,7 +7,7 @@ The AI Chatbot has been significantly upgraded from a mock responder to a **real
 1.  **Gemini AI Integration**: 
     - Replaced hardcoded responses with dynamic calls to the `gemini-flash-latest` model (faster and more optimized for short tasks than the pro model).
     - Added `checker.ai.GeminiService` to handle asynchronous HTTP requests.
-    - Added `checker.ai.GeminiConfig` to store API configuration (Keys/URLs).
+    - Added `checker.constants` to store API configuration (Keys/URLs).
 
 2.  **Context-Aware Advice**:
     - The AI receives a system prompt containing the user's **Name**, **Wins**, **Losses**, and **Streak**.
@@ -31,14 +31,14 @@ The AI Chatbot has been significantly upgraded from a mock responder to a **real
 - **Data Shared**: Only statistical aggregates (Wins, Losses, Streak, Name) and the specific text question are sent to the LLM. No raw game board data is transmitted in this version.
 
 ## Usage
-1.  **Configuration**: Users must add their Gemini API Key to `checker.ai.GeminiConfig`.
+1.  **Configuration**: Users must add their Gemini API Key to `checker.constants`.
 2.  **Interaction**:
     - Open "AI Strategy Chat".
     - Type a question (e.g., "How do I beat a defensive player?").
     - The Coach responds: *"Hey [Name]! Since you're on a [X] game streak, try aggressive center control..."*
 
 ## Requirements
-- **API Key**: Valid Google AI Studio API Key required in `GeminiConfig.java`.
+- **API Key**: Valid Google AI Studio API Key required in `checker.constants`.
 - **Internet**: Active connection required to reach `generativelanguage.googleapis.com`.
 
 ## Updates & Changes (Jan 15, 2026)

@@ -132,27 +132,8 @@ public class VirtualBoard {
                              // Generate full chain if possible
                              VMove baseMove = new VMove(r, c, nr, nc, true);
                              baseMove.capturedPos.add(new int[]{midR, midC});
-                             // Note: In minimax, we usually just evaluate the single step or 
-                             // recursively Find longest chain.
-                             // For simplicity: We will just return the immediate capture step available.
-                             // The search will treat each jump as a ply if we wanted, OR we settle the chain.
-                             // Implementing full chain settlement is safest for eval.
-                             
-                             // Let's settle the chain immediately in `applyMove`? 
-                             // No, Minimax needs to know the final state.
-                             // So the move generator should probably return the "Final Destination" of the turn?
-                             // Multi-jump logic is complex. 
-                             // Let's stick to single steps for VMove, but `applyMove` handles just that step.
-                             // BUT, rule is: if you can capture, you MUST. And if you capture, turn continues.
-                             // So a "Turn" consists of multiple "Moves".
-                             // Standard Minimax works on Turns.
-                             // So getLegalMoves should return full turns.
-                             
-                             // REVISION: We will Expand the single capture. 
-                             // If `applyMove` results in state where `canCaptureAgain`, we don't switch turns?
-                             // We'll handle that in Minimax recursion? 
-                             // If state allows capture for SAME player, player must move again.
-                             
+                             // Note: In minimax, we usually just evaluate the single step or recursively. 
+                             //  Find longest chain or simplicity: We will just return the immediate capture step available
                             captures.add(baseMove);
                          }
                      }
@@ -187,8 +168,6 @@ public class VirtualBoard {
         if (m.isCapture) {
             // Remove captured
             // We only support single jump in VMove structure above for now?
-            // Actually, let's just handle the single jump. 
-            // The capturedPos list has the victim.
             if (!m.capturedPos.isEmpty()) {
                 m.capturedTypes = new byte[m.capturedPos.size()];
                 for(int i=0; i<m.capturedPos.size(); i++) {
@@ -198,8 +177,6 @@ public class VirtualBoard {
                 }
             }
             // Check multi-jump
-            // If just promoted, turn ends? (Standard rules: yes/no varies. We'll assume yes for simplicity or no)
-            // Let's assume standard: yes, promotion ends turn.
             if (m.wasPromotion) return true; 
             
             return !canCaptureFrom(m.toR, m.toC, p);

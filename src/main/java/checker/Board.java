@@ -20,14 +20,14 @@ public class Board {
     
      // setup the checkerboard on myPane
     private void setupBoard() {
-        int squareSize = 50;
-        for (int row = 0; row < 10; row++) {
-            for (int col = 0; col < 10; col++) {
+        int squareSize = constants.SQUARE_SIZE;
+        for (int row = 0; row < constants.BOARD_SIZE; row++) {
+            for (int col = 0; col < constants.BOARD_SIZE; col++) {
                 if ((row + col) % 2 == 0) {
-                    Square square = new Square(this.boardColors[0], col * squareSize + 20, row * squareSize + 20); // the additional 20 is for the offset values up and down
+                    Square square = new Square(this.boardColors[0], col * squareSize + constants.BOARD_OFFSET, row * squareSize + constants.BOARD_OFFSET); // the additional 20 is for the offset values up and down
                     this.myPane.getChildren().add(square.getSquare());
                 } else {
-                    Square square = new Square(this.boardColors[1], col * squareSize + 20, row * squareSize + 20);
+                    Square square = new Square(this.boardColors[1], col * squareSize + constants.BOARD_OFFSET, row * squareSize + constants.BOARD_OFFSET);
                     this.myPane.getChildren().add(square.getSquare());
                 }
 
@@ -38,13 +38,13 @@ public class Board {
 
     // setup the pierces on the board
     private void setupPierces() {
-        int squareSize = 50;
-        int boardOffset = 20;
-        int centerOffset = 25; // to center the piece in the square
+        int squareSize = constants.SQUARE_SIZE;
+        int boardOffset = constants.BOARD_OFFSET;
+        int centerOffset = constants.SQUARE_SIZE / 2; // to center the piece in the square
 
         // Loop through every square on the 10x10 board
-        for (int row = 0; row < 10; row++) {
-            for (int col = 0; col < 10; col++) {
+        for (int row = 0; row < constants.BOARD_SIZE; row++) {
+            for (int col = 0; col < constants.BOARD_SIZE; col++) {
                 
                 // Only place pieces on "dark" squares (where row + col is odd)
                 if ((row + col) % 2 != 0) {

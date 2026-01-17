@@ -42,7 +42,7 @@ public class PopupViews {
         
         // Window Background
         VBox window = new VBox(15);
-        window.setMaxSize(500, 400); // Standard size
+        window.setMaxSize(constants.POPUP_WIDTH, constants.POPUP_HEIGHT); // Standard size
         window.setPadding(new Insets(20));
         window.getStyleClass().add("popup-window");
         
@@ -134,14 +134,14 @@ public class PopupViews {
         buttons.setAlignment(Pos.CENTER);
         
         Button signInBtn = new Button("Sign In");
-        signInBtn.setStyle("-fx-background-color: #2E8B57; -fx-text-fill: white; -fx-font-weight: bold;");
+        signInBtn.setStyle("-fx-background-color: " + constants.COLOR_SIGN_IN + "; -fx-text-fill: white; -fx-font-weight: bold;");
         
         Button signUpBtn = new Button("Sign Up");
-        signUpBtn.setStyle("-fx-background-color: #4285F4; -fx-text-fill: white; -fx-font-weight: bold;");
+        signUpBtn.setStyle("-fx-background-color: " + constants.COLOR_SIGN_UP + "; -fx-text-fill: white; -fx-font-weight: bold;");
 
         // Google Sign In Button
         Button googleBtn = new Button("Sign in with Google");
-        googleBtn.setStyle("-fx-background-color: #DB4437; -fx-text-fill: white; -fx-font-weight: bold;");
+        googleBtn.setStyle("-fx-background-color: " + constants.COLOR_GOOGLE + "; -fx-text-fill: white; -fx-font-weight: bold;");
         
         Label errorLabel = new Label();
         errorLabel.setStyle("-fx-text-fill: red;");
@@ -163,7 +163,7 @@ public class PopupViews {
         nameField.setMaxWidth(200);
         
         Button saveNameBtn = new Button("Continue");
-        saveNameBtn.setStyle("-fx-background-color: #2E8B57; -fx-text-fill: white;");
+        saveNameBtn.setStyle("-fx-background-color: " + constants.COLOR_SIGN_IN + "; -fx-text-fill: white;");
         
         nameBox.getChildren().addAll(askNameLabel, nameField, saveNameBtn);
         
@@ -362,10 +362,10 @@ public class PopupViews {
         title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
         
         Button findMatchBtn = new Button("Find Online Match");
-        findMatchBtn.setStyle("-fx-background-color: #4682B4; -fx-text-fill: white; -fx-font-size: 16px; -fx-pref-width: 250; -fx-padding: 10;");
+        findMatchBtn.setStyle("-fx-background-color: " + constants.COLOR_FIND_MATCH + "; -fx-text-fill: white; -fx-font-size: 16px; -fx-pref-width: 250; -fx-padding: 10;");
         
         Button createRoomBtn = new Button("Create Private Room");
-        createRoomBtn.setStyle("-fx-background-color: #8A2BE2; -fx-text-fill: white; -fx-font-size: 16px; -fx-pref-width: 250; -fx-padding: 10;");
+        createRoomBtn.setStyle("-fx-background-color: " + constants.COLOR_CREATE_ROOM + "; -fx-text-fill: white; -fx-font-size: 16px; -fx-pref-width: 250; -fx-padding: 10;");
         
         HBox joinBox = new HBox(10);
         joinBox.setAlignment(Pos.CENTER);
@@ -409,7 +409,7 @@ public class PopupViews {
         ProgressIndicator lobbyProgress = new ProgressIndicator();
         
         Button lobbyStartBtn = new Button("Start Game");
-        lobbyStartBtn.setStyle("-fx-background-color: #32CD32; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
+        lobbyStartBtn.setStyle("-fx-background-color: " + constants.COLOR_START_GAME + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
         lobbyStartBtn.setDisable(true);
         
         Button lobbyCancelBtn = new Button("Cancel Room");
@@ -452,7 +452,7 @@ public class PopupViews {
         HBox actionBtns = new HBox(15);
         actionBtns.setAlignment(Pos.CENTER);
         Button startBtn = new Button("Accept & Play");
-        startBtn.setStyle("-fx-background-color: #32CD32; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;");
+        startBtn.setStyle("-fx-background-color: " + constants.COLOR_START_GAME + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;");
         Button declineBtn = new Button("Decline");
         actionBtns.getChildren().addAll(startBtn, declineBtn);
         
@@ -472,9 +472,9 @@ public class PopupViews {
         suggestion.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         
         Button vsComBtn = new Button("Play vs Computer");
-        vsComBtn.setStyle("-fx-base: #FFD700;");
+        vsComBtn.setStyle("-fx-base: " + constants.COLOR_VS_COMPUTER + ";");
         Button vsHumanBtn = new Button("Play vs Local Friend");
-        vsHumanBtn.setStyle("-fx-base: #FFA07A;");
+        vsHumanBtn.setStyle("-fx-base: " + constants.COLOR_VS_HUMAN + ";");
         Button retryBtn = new Button("Try Again");
         
         noMatchBox.getChildren().addAll(noMatchTitle, suggestion, vsComBtn, vsHumanBtn, retryBtn);
@@ -663,7 +663,7 @@ public class PopupViews {
         msgInput.setPromptText("Type your question...");
         HBox.setHgrow(msgInput, Priority.ALWAYS);
         Button sendBtn = new Button("Ask");
-        sendBtn.setStyle("-fx-background-color: #0078FF; -fx-text-fill: white; -fx-font-weight: bold;");
+        sendBtn.setStyle("-fx-background-color: " + constants.COLOR_CHAT_SEND + "; -fx-text-fill: white; -fx-font-weight: bold;");
         inputBox.getChildren().addAll(msgInput, sendBtn);
         
         checker.ai.GeminiService aiService = new checker.ai.GeminiService();
