@@ -8,7 +8,7 @@ public class Game {
     private Board gameBoard;
     private Pane gamePane;
     private Pane sidePane;
-    private sideBar sideBar; // Stored reference
+    private sideBar sideBar; 
     private HumanPlayer player1;
     private HumanPlayer player2;
 
@@ -148,16 +148,4 @@ public class Game {
         this.gameBoard = new Board(this.gamePane, boardColors);
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }

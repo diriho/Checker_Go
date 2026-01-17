@@ -1,13 +1,13 @@
-# Checker_Go
+# 🎭 Checker_Go
 A Java-based Checkers game built with JavaFX featuring three AI difficulty levels (easy, intermediate, hard) and a secure authentication system that enables online multiplayer and performance tracking. The project also integrates an AI-powered strategy chatbot to help players learn tactics, analyze gameplay, and improve their chances of winning.
 <p align="center">
   <img src="src/asset/board1.png" width="400" />
 </p>
 
-## Game Specifications
+## ✨ Game Specifications
  Checkers is a two-player strategy board game played on an 8×8 board where each player starts with 12 pieces placed on the dark squares of the three rows closest to them. Players take turns moving one piece diagonally forward to an adjacent empty square; if an opponent’s piece is directly adjacent and the square beyond it is empty, the player must capture by jumping over that piece, removing it from the board. **Captures are mandatory (Forced Jumps)**: If a capture is available, the player *must* take it. If multiple jump sequences are available, the player *can* choose which sequence to take, but they cannot choose a non-capturing move. Multiple jumps can be made in a single turn if successive captures are possible. When a piece reaches the opponent’s back row, it is promoted to a king, which can move and capture diagonally both forward and backward. The game ends when one player has no pieces left or no legal moves remaining, at which point the other player wins.
 
-## Feature Integrations
+## 🚀 Feature Integrations
 
 ### 1. Board customization
 The Confirm Settings logic has been adjusted so that any new settings—whether related to the game mode or the board color are applied by starting a new game. When Start New Game is selected, the game begins immediately, while the control settings remain unchanged. This ensures that pressing Confirm only applies the updated settings without resetting the existing control configuration.
@@ -53,7 +53,7 @@ An intelligent chatbot powered by **Google's Gemini 1.5 Flash Model** has been i
   <img src="src/asset/chatbot.png" width="300" />
 </p>
 
-## AI Difficulty Levels Implementation
+## 🤖 AI Difficulty Levels Implementation
 The computer opponent (`ComputerPlayer`) has been refactored to use a Strategy Pattern, allowing for pluggable AI implementations implementing the `MoveStrategy` interface.
 
 ### 1. Easy Mode (`EasyAI`)
@@ -76,7 +76,7 @@ The computer opponent (`ComputerPlayer`) has been refactored to use a Strategy P
     - **Promotion Potential:** Bonus for advancing pieces toward the King row.
 - **Expectation:** The computer plays highly aggressively and strategically, competing for board control and utilizing advanced heuristics to outsmart the opponent.
 
-## Testing
+## 🛠️ Testing
 The project includes a suite of unit tests to ensure the reliability of core components, particularly the integrations with external services (Gemini AI) using **JUnit 5** and **Mockito**.
 And all the tests pass with a success rate of `100%`
 
@@ -94,7 +94,7 @@ To execute the full test suite, run the following command in your terminal:
 mvn test
 ```
 
-## How to?
+## 🎯 How to?
 Git repository: https://github.com/diriho/Checker_Go.git
 
 This program uses Maven as an automation and dependency management tool. 
@@ -145,3 +145,11 @@ Shortcut:
 ``` bash
 mvn clean compile javafx:run 
 ``` 
+
+## 👤 Author
+
+**[diriho](https://github.com/diriho)** and **[pkedego](https://github.com/pkedogo)**
+
+---
+
+Built with 🤎🤎🤎 using Java, JavaFX, CSS, and GitHub Copilot
