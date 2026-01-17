@@ -58,6 +58,23 @@ The computer opponent (`ComputerPlayer`) has been refactored to use a Strategy P
     - **Promotion Potential:** Bonus for advancing pieces toward the King row.
 - **Expectation:** The computer plays highly aggressively and strategically, competing for board control and utilizing advanced heuristics to outsmart the opponent.
 
+## Testing
+The project includes a suite of unit tests to ensure the reliability of core components, particularly the integrations with external services (Gemini AI) using **JUnit 5** and **Mockito**.
+
+### 1. AI Coach Service Tests (`GeminiApiTest`)
+*   **Scope:** Validates the `GeminiService` which powers the AI Chatbot.
+*   **Methodology:** Mocks both the `HttpClient` for API calls and the `UserDataManager` to simulate user states without relying on local files.
+*   **Scenarios Covered:**
+    *   **Prompt Construction:** Ensures that player statistics (wins, losses, streak) are correctly formatted into the context prompt sent to the LLM.
+    *   **Response Parsing:** Verifies that the nested JSON structure returned by the Gemini API is correctly parsed to extract the advice text.
+    *   **API Failures:** Checks that appropriate fallback messages are returned when the API responds with errors (e.g., 500 Internal Server Error) or during network outages.
+
+### How to Run Tests
+To execute the full test suite, run the following command in your terminal:
+```bash
+mvn test
+```
+
 ## How to?
 Git repository: https://github.com/diriho/Checker_Go.git
 

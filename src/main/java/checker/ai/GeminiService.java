@@ -15,9 +15,16 @@ import checker.data.UserDataManager;
 public class GeminiService {
     
     private final HttpClient client;
+    private final UserDataManager userDataManager;
 
     public GeminiService() {
         this.client = HttpClient.newHttpClient();
+        this.userDataManager = UserDataManager.getInstance();
+    }
+
+    public GeminiService(HttpClient client, UserDataManager userDataManager) {
+        this.client = client;
+        this.userDataManager = userDataManager;
     }
 
     /**
@@ -27,7 +34,7 @@ public class GeminiService {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 // Gather Context
-                UserDataManager dm = UserDataManager.getInstance();
+                UserDataManager dm = this.userDataManager;
                 String name = dm.getDisplayName();
                 int wins = dm.getWins();
                 int losses = dm.getLosses();
