@@ -512,7 +512,7 @@ public class PopupViews {
                         String url = "https://ui-avatars.com/api/?name=" + name + "&background=random&size=128&rounded=true";
                         oppImage.setImage(new Image(url, true)); // load in background
                     } catch (Exception ex) { 
-                        // If offline, maybe set a local color block or nothing
+                       // none
                     }
                 } else {
                     // No Match Found
@@ -533,8 +533,7 @@ public class PopupViews {
         
         // 2. Match Actions
         startBtn.setOnAction(e -> {
-            // In a real app, this would start a network game. 
-            // Here we just close the popup and assume the game starts locally.
+            // Here we  close the popup and assume the game starts locally.
             organizer.closePopup();
         });
         

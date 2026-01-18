@@ -152,4 +152,4 @@ mvn clean compile javafx:run
 
 ---
 
-Built with 🤎🤎🤎 using Java, JavaFX, CSS, and GitHub Copilot
+Built with 🤎🤎🤎 using Java, JavaFX, CSS, and GitHub Copilot 
