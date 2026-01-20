@@ -120,7 +120,7 @@ public class ComputerPlayer extends HumanPlayer {
         } else {
              finalizeTurn();
         }
-    }
+    } 
     
     private Move convertToRealMove(VirtualBoard.VMove vm) {
         Pierce p = this.board.getMyPierces()[vm.fromR][vm.fromC];
