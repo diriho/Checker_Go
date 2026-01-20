@@ -42,6 +42,10 @@ public class Game {
     }
     
     public void resetGame(boolean vsComputer, Difficulty difficulty, BoardTheme theme) {
+        // Cleanup old players to remove event handlers and stop timers
+        if (this.player1 != null) this.player1.cleanup();
+        if (this.player2 != null) this.player2.cleanup();
+
         this.gamePane.getChildren().clear();
         this.initializeGameBoard(theme);
         this.initializePlayers(vsComputer, difficulty);

@@ -212,10 +212,14 @@ public class VirtualBoard {
         int[] dc = {-2, 2, -2, 2};
 
          for (int i = 0; i < 4; i++) {
+            // Fix: Allow backward captures for Men in 10x10 International Checkers rules logic
+            // (Previous logic incorrectly restricted Men to forward-only captures)
+            /* 
             if (!isKing) {
                if (isWhite && dr[i] > 0) continue;
                if (!isWhite && dr[i] < 0) continue;
             }
+            */
             int nr = r + dr[i];
             int nc = c + dc[i];
             if (nr >= 0 && nr < 10 && nc >= 0 && nc < 10 && grid[nr][nc] == EMPTY) {

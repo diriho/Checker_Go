@@ -19,6 +19,9 @@ public class HumanPlayer implements PlayerInterface {
     protected Runnable onTurnEnd;
     protected boolean mustCapture;
     protected Pierce forcedPiece;
+    
+    // Track event handler for cleanup
+    private javafx.event.EventHandler<MouseEvent> mouseHandler;
 
     // Constructor for HumanPlayer class
     public HumanPlayer(Board board, Color color) {
@@ -57,7 +60,7 @@ public class HumanPlayer implements PlayerInterface {
     }
 
     protected void setUpMouseHandler() {
-        this.board.getPane().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+        this.mouseHandler = event -> {
             double x = event.getX();
             double y = event.getY();
             
@@ -69,7 +72,16 @@ public class HumanPlayer implements PlayerInterface {
             if (col >= 0 && col < 10 && row >= 0 && row < 10) {
                this.processClick(row, col);
             }
-        });
+        };
+        this.board.getPane().addEventHandler(MouseEvent.MOUSE_CLICKED, this.mouseHandler);
+    }
+    
+    // Cleanup method to remove listeners and prevent "zombie" players
+    public void cleanup() {
+        if (this.mouseHandler != null) {
+            this.board.getPane().removeEventHandler(MouseEvent.MOUSE_CLICKED, this.mouseHandler);
+            this.mouseHandler = null;
+        }
     }
 
     private void processClick(int row, int col) {

@@ -7,6 +7,8 @@ import javafx.util.Duration;
 public class ComputerPlayer extends HumanPlayer {
 
     private MoveStrategy strategy;
+    private PauseTransition thinkingPause;
+    private PauseTransition jumpPause;
 
     // Constructor for ComputerPlayer class
     public ComputerPlayer(Board board, Color color) {
@@ -43,10 +45,17 @@ public class ComputerPlayer extends HumanPlayer {
         super.setTurn(isTurn);
         if (isTurn) {
             // Simulate thinking time
-            PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.setOnFinished(e -> makeMove());
-            pause.play();
+            this.thinkingPause = new PauseTransition(Duration.seconds(1));
+            this.thinkingPause.setOnFinished(e -> makeMove());
+            this.thinkingPause.play();
         }
+    }
+    
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        if (this.thinkingPause != null) this.thinkingPause.stop();
+        if (this.jumpPause != null) this.jumpPause.stop();
     }
 
     private void makeMove() {
@@ -70,13 +79,32 @@ public class ComputerPlayer extends HumanPlayer {
              executeCaptureMove(move.fromRow, move.fromCol, move.toRow, move.toCol, move.jumpRow, move.jumpCol);
              
              if (this.selectedPiece != null) {
-                 PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
-                 pause.setOnFinished(e -> continueMultiJump(this.selectedPiece));
-                 pause.play();
+                 this.jumpPause = new PauseTransition(Duration.seconds(0.5));
+                 this.jumpPause.setOnFinished(e -> continueMultiJump(this.selectedPiece));
+                 this.jumpPause.play();
              }
         } else {
              executeSimpleMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
         }
+    }
+
+    @Override
+    protected void executeCaptureMove(int oldRow, int oldCol, int targetRow, int targetCol, int jumpedRow, int jumpedCol) {
+        // --- Board Update Logic (Copied from HumanPlayer to avoid super.executeCaptureMove side effects) ---
+        
+        // Remove captured piece
+        Pierce capturedPiece = this.board.getMyPierces()[jumpedRow][jumpedCol];
+        this.board.getMyPierces()[jumpedRow][jumpedCol] = null;
+        if (capturedPiece != null) {
+            this.board.getPane().getChildren().remove(capturedPiece.getNode());
+        }
+        
+        this.updateBoardAndPiece(oldRow, oldCol, targetRow, targetCol);
+        
+        // CRITICAL CHANGE: We do NOT call finalizeTurn() or set forcedPiece here.
+        // The ComputerPlayer's async logic (continueMultiJump) controls the turn flow.
+        // Calling super.executeCaptureMove() would trigger finalizeTurn() if no further jumps are valid,
+        // causing a race condition with our PauseTransition in executeMove().
     }
 
     private void continueMultiJump(Pierce p) {
@@ -84,20 +112,15 @@ public class ComputerPlayer extends HumanPlayer {
         // The strategy will respect the 'forcedPiece' constraint and pick the best path
         Move nextMove = this.strategy.chooseMove(this.board, this.myColor, p);
         
-        if (nextMove != null) {
+        // FIX: Ensure that the continuation move is strictly a CAPTURE.
+        // It is illegal to make a simple move in the middle of a multi-jump sequence.
+        // VirtualBoard might return simple moves if no captures exist, so we must filter them out.
+        if (nextMove != null && nextMove.isCapture) {
              executeMove(nextMove);
         } else {
              finalizeTurn();
         }
     }
-    
-    // Legacy helper kept if needed, but strategy handles conversion now usually.
-    // Actually strategy returns Move, so we don't need convertToRealMove here anymore 
-    // UNLESS strategy is calling it. MoveStrategy impls call their own convert.
-    // So we can remove convertToRealMove from ComputerPlayer or keep it if used elsewhere.
-    // It is not used elsewhere in this file based on my reading.
-    // But I will keep it to minimize diff churn just in case, or remove it to be clean.
-    // Strategy returns 'checker.Move', executeMove takes 'checker.Move'.
     
     private Move convertToRealMove(VirtualBoard.VMove vm) {
         Pierce p = this.board.getMyPierces()[vm.fromR][vm.fromC];
